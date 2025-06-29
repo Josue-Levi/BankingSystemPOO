@@ -1,23 +1,35 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 
 public abstract class Conta {
     
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    
+    public static DateTimeFormatter getFormatter() {
+    return FORMATTER;
 
+}
     //Atributos
-    protected int numeroDaConta;
+    protected String numeroDaConta;
     protected String titular;
     protected double saldo;
+    protected LocalDate dataCriacao;
 
-    public Conta(int numeroDaConta, String titular, double saldo){
+    public Conta(String numeroDaConta, String titular, double saldo){
         this.numeroDaConta = numeroDaConta;
         this.titular = titular;
         this.saldo = saldo;
+        this.dataCriacao = LocalDate.now();
     }
 
-    public int getNumeroDaConta(){
+    public LocalDate getDataCriacao() { // Getter para o novo atributo
+        return dataCriacao;
+    }
+
+    public String getNumeroDaConta(){
         return numeroDaConta;
     }
 
@@ -29,42 +41,42 @@ public abstract class Conta {
         return saldo;
     }
 
-    public int setNumeroDaConta(int numeroDaConta){
+    public void setNumeroDaConta(String numeroDaConta){
         this.numeroDaConta = numeroDaConta;
     }
 
-    public String setTitular(String titular){
+    public void setTitular(String titular){
         this.titular = titular;
     }
 
-    public double setSaldo(double saldo){
+    public void setSaldo(double saldo){
         this.saldo = saldo;
     }
 
     //Métodos
     public void depositar(double valor){
         if(valor > 0){
-            String dataHoraFormatada = agora.format(formatter);
+            LocalDateTime agora = LocalDateTime.now();
+            String dataHoraFormatada = agora.format(FORMATTER);
             this.saldo += valor;
             System.out.printf("Depósito de R$ %.2f realizado. Novo saldo: R$ %.2f.\n", valor, this.saldo);
-            System.out.println("Data e hora do depósito: %s.", dataHoraFormatada);
+            System.out.printf("Data e hora do depósito: %s.\n", dataHoraFormatada);
         } else {
-            System.out.println("Valor de depósito inválido!");
+            System.out.println("Valor de depósito inválido!\n");
         }
     }
 
     public void sacar(double valor){
-        if(valor > 0){
-            String dataHoraFormatada = agora.format(formatter);
+        if(valor > 0 && this.saldo >= valor){
+            LocalDateTime agora = LocalDateTime.now();
+            String dataHoraFormatada = agora.format(FORMATTER);
             this.saldo -= valor;
-            System.out.println("Saque de R$ %.2f realizado. Novo saldo: R$ %.2f.\n", valor, this.saldo);
-            System.out.println("Data e hora do saque: %s.", dataHoraFormatada);
+            System.out.printf("Saque de R$ %.2f realizado. Novo saldo: R$ %.2f.\n", valor, this.saldo);
+            System.out.printf("Data e hora do saque: %s.\n", dataHoraFormatada);
         } else {
-            System.out.println("Valor de saque inválido!");
+            System.out.println("Valor de saque inválido!\n");
         }
     }
 
-    public void gerarExtrato(){
-        
-    }
+    public abstract void gerarExtrato();
 }
