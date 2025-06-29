@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c8c36e6-79d8-4dbe-a194-5a55236a422b" name="Changes" comment="" />
+    <list default="true" id="9c8c36e6-79d8-4dbe-a194-5a55236a422b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/bin/clients/PessoaFisicaMain.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/clients/PessoaFisicaMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/clients/PessoaFisica.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/clients/PessoaFisica.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/model/Conta.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/model/ContaCorrente.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/model/ContaPoupanca.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/validation/ValidadorCPF.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/validation/ValidadorCPF.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/clients/PessoaFisica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/clients/PessoaFisica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Conta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Conta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/ContaCorrente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/ContaCorrente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/ContaPoupanca.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/ContaPoupanca.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/validation/ValidadorCPF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/validation/ValidadorCPF.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,16 +36,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/sbian/Music/BankingSystemPOO&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Merging bianca",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/sbian/Music/BankingSystemPOO",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="BankingSystemPOO" />
