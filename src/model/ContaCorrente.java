@@ -36,10 +36,10 @@ public class ContaCorrente extends Conta {
         int mesAtual = hoje.getMonthValue();
         int anoAtual = hoje.getYear();
 
-        System.out.println("===== COBRANÇA MENSAL DA CONTA CORRENTE =====");
         if(this.ultimoAnoCobrancaTaxaManutencao < anoAtual || (anoAtual == this.ultimoAnoCobrancaTaxaManutencao && this.ultimoMesCobrancaTaxaManutencao < mesAtual)){
+            System.out.println("\n===== COBRANÇA MENSAL DA CONTA CORRENTE =====");
             this.saldo -= TAXA_MANUTENCAO_MENSAL;
-            System.out.printf("Taxa de Cobrança Mensal de R$ %.2f", TAXA_MANUTENCAO_MENSAL);
+            System.out.printf("Taxa de manutenção mensal de R$ %.2f cobrada. Novo saldo: R$ %.2f.\n", TAXA_MANUTENCAO_MENSAL, this.saldo);
             this.contadorTransacoesMes = 0;
             this.ultimoMesCobrancaTaxaManutencao = mesAtual; 
             this.ultimoAnoCobrancaTaxaManutencao = anoAtual;
@@ -51,28 +51,33 @@ public class ContaCorrente extends Conta {
         cobrarTaxaManutencaoMensal();
         if(valor > 0 && (this.limiteChequeEspecial + this.saldo) >= valor){
             LocalDateTime agora = LocalDateTime.now();
-            String dataHoraFormatada = agora.format(Conta.FORMATTER);
+            String dataHoraFormatada = agora.format(getFormatter());
             this.saldo -= valor;
             System.out.printf("Saque de R$ %.2f realizado. Novo saldo: R$ %.2f.\n", valor, this.saldo);
             System.out.printf("Data e hora do saque: %s.\n", dataHoraFormatada);
+            this.contadorTransacoesMes += 1;
             if(TRANSACOES_GRATUITAS_MES < this.contadorTransacoesMes){
                 this.saldo -= TAXA_POR_TRANSACAO_EXTRA;
             }
-            this.contadorTransacoesMes += 1;
         }
         else {
-            System.out.println("Saldo insuficiente ou valor inválido!");
+            System.out.println("Saldo insuficiente ou valor inválido!\n");
         }
     }
 
     @Override
     public void gerarExtrato(){
-        System.out.println("\nExtrato: ");
+        System.out.println("\nExtrato: \n");
         System.out.printf("Número da Conta: %s\n", this.numeroDaConta);
         System.out.printf("Titular: %s\n", this.titular);
         System.out.printf("Saldo: R$ %.2f\n", this.saldo);
         System.out.printf("Limite de Cheque Especial: R$ %.2f\n", this.limiteChequeEspecial);
+        System.out.println("Data de Criação: " + this.dataCriacao.format(getFormatter()));
+        System.out.printf("Número de Transações Efetuadas: %d\n", this.contadorTransacoesMes);
+        if(TRANSACOES_GRATUITAS_MES > this.contadorTransacoesMes){
+            System.out.printf("Número de Transações Gratuítas restantes: %d\n", TRANSACOES_GRATUITAS_MES - this.contadorTransacoesMes);
+        } else {
+            System.out.println("Número de Transações Gratuítas restantes: 0\n");
+        }
     }
-
-
 }
