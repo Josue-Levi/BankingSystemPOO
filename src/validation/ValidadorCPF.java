@@ -1,5 +1,6 @@
 package validation;
 
-public class ValidadorCPF {
-    
+public class ValidadorCPF () {
+
+
 }
