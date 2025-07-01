@@ -1,16 +1,17 @@
 package model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 
 public class ContaPoupanca extends Conta{
 
+    //Atributos
     private final double TAXA_RENDIMENTO_MENSAL = 0.005;
     private int diaAniversarioRendimento; 
     private int ultimoMesRendimentoAplicado;  
     private int ultimoAnoRendimentoAplicado; 
 
+    //Construtores
     public ContaPoupanca(String numeroDaConta, String titular, double saldo){
         super(numeroDaConta, titular, saldo);
         this.diaAniversarioRendimento = this.dataCriacao.getDayOfMonth(); 
@@ -18,6 +19,7 @@ public class ContaPoupanca extends Conta{
         this.ultimoAnoRendimentoAplicado = this.dataCriacao.getYear(); 
     }
 
+    //Método de Aplicação de Rendimento Mensal
     public void aplicarRendimento(){
 
         LocalDate hoje = LocalDate.now();
@@ -25,7 +27,13 @@ public class ContaPoupanca extends Conta{
         int anoAtual = hoje.getYear();
         LocalDate ultimoDiaDoMes = hoje.with(TemporalAdjusters.lastDayOfMonth());
         LocalDate dataParaAplicacaoEsteMes;
-
+        
+        /**
+         * A lógica exerce uma verificação inical que avalia se o mês ou o ano passou para dar continuidade ao código. Depois, avalia o dia de hoje e compara com a data de aniversário da conta, avaliando dois casos:
+         * 1. Conta criada em um dia inexistente no mês (por exemplo, 30 de fevereiro)
+         * 2. Conta criada em um dia existente no mês
+         */
+        
         if(this.ultimoAnoRendimentoAplicado < anoAtual || (anoAtual == this.ultimoAnoRendimentoAplicado && 
         this.ultimoMesRendimentoAplicado < mesAtual)){
             System.out.println("===== APLICAÇÃO DO RENDIMENTO MENSAL =====");
@@ -45,18 +53,21 @@ public class ContaPoupanca extends Conta{
         }
     }
     
+    //Sobrescrição do Método de Saque
     @Override
     public void sacar(double valor){
         aplicarRendimento();
         super.sacar(valor);
     }
 
+    //Sobrescrição do Método de Depósito
     @Override
     public void depositar(double valor){
         aplicarRendimento();
         super.depositar(valor);
     }
 
+    //Definição do Método de Geração de Extrato
     @Override
     public void gerarExtrato(){
         System.out.println("\n===== EXTRATO ===== \n");
