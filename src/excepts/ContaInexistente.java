@@ -1,5 +1,5 @@
 package excepts;
 
 public class ContaInexistente {
-    
+    private 
 }
