@@ -51,6 +51,7 @@ public class ContaPoupanca extends Conta{
             }
             //Calcula a diferença de meses entre a data da última aplicação e a data de aplicação para esse mês
             long quantidadeDeMeses = ChronoUnit.MONTHS.between(ultimaDataDeAplicacaoPrevista, dataParaAplicacaoEsteMes);
+            
             if(quantidadeDeMeses == 1){
                 if(dataAtualSimulada.isAfter(dataParaAplicacaoEsteMes) || dataAtualSimulada.isEqual(dataParaAplicacaoEsteMes)){
                     System.out.println("===== APLICAÇÃO DO RENDIMENTO MENSAL =====");
