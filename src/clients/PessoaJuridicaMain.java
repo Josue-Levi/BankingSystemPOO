@@ -1,15 +1,15 @@
 package clients;
 import java.util.Scanner;
 
-public class PessoaFisicaMain {
+public class PessoaJuridicaMain {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("===== CADASTRO DE PESSOA FÍSICA =====");
-        // entrada dos dados pessoais
+        System.out.println("===== CADASTRO DE PESSOA JURIDICA =====");
+        //entrada dos dados pessoais
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
 
-        System.out.print("Data de nascimento (dd/mm/aaaa): ");
+        System.out.print("Data de Nascimento (dd/mm/ano): ");
         String nascimento = scanner.nextLine();
 
         System.out.print("CPF: ");
@@ -21,11 +21,18 @@ public class PessoaFisicaMain {
         System.out.print("Telefone: ");
         String telefone = scanner.nextLine();
 
+        // entrada dos dados da empresa
+        System.out.println("===== CADASTRO DE INFORMAÇÕES DA EMPRESA =====");
+        System.out.print("Razão Social: ");
+        String razaosocial = scanner.nextLine();
+        System.out.print("CNPJ: ");
+        String CNPJ = scanner.nextLine();
+
         // criação do objeto com dados pessoais
-        PessoaFisica pessoa = new PessoaFisica(nome, nascimento, cpf, email, telefone);
+        PessoaJuridica pessoa = new PessoaJuridica(nome, nascimento, cpf, email, telefone, CNPJ, razaosocial);
 
         // entrada dos dados de endereço
-        System.out.println("\n===== CADASTRO DE ENDEREÇO =====");
+        System.out.println("\n===== CADASTRO DE LOCALIZAÇÃO DA EMPRESA =====");
 
         System.out.print("Estado: ");
         String estado = scanner.nextLine();
@@ -49,13 +56,12 @@ public class PessoaFisicaMain {
         System.out.print("CEP: ");
         String cep = scanner.nextLine();
 
-        // criação do objeto com dados da residencia
+        // criação do objeto com dados da localização da empresa
         pessoa.setEndereco(estado, cidade, bairro, rua, numero, complemento, cep);
 
-        // exibir dados inseridos pela pessoa fisica
-        pessoa.ExibirDadosPessoaFisica();
+        // exibir dados cadastrado pela pessoa juridica
+        pessoa.ExibirDadosPessoaJuridica();
 
         scanner.close();
     }
 }
-
