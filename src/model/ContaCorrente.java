@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class ContaCorrente extends Conta {
 
+    //Atributos
     private final double TAXA_MANUTENCAO_MENSAL = 10.00;
     private final double TAXA_POR_TRANSACAO_EXTRA = 2.50;
     private final int TRANSACOES_GRATUITAS_MES = 20;
@@ -14,6 +15,7 @@ public class ContaCorrente extends Conta {
     private int ultimoMesCobrancaTaxaManutencao;
     private int ultimoAnoCobrancaTaxaManutencao;
 
+    //Construtor
     public ContaCorrente(String numeroDaConta, String titular, double saldo, double limiteChequeEspecial){
         super(numeroDaConta, titular, saldo);
         this.limiteChequeEspecial = limiteChequeEspecial;
@@ -22,14 +24,17 @@ public class ContaCorrente extends Conta {
         this.ultimoAnoCobrancaTaxaManutencao = LocalDate.now().getYear();
     }
 
+    //Getters
     public double getLimiteChequeEspecial() {
         return limiteChequeEspecial;
     }
 
+    //Setters
     public void setLimiteChequeEspecial(double limiteChequeEspecial) {
         this.limiteChequeEspecial = limiteChequeEspecial;
     }
 
+    //Método de Cobrança de Taxa de Manutenção Mensal
     public void cobrarTaxaManutencaoMensal(){
         LocalDate hoje = LocalDate.now();
         int mesAtual = hoje.getMonthValue();
@@ -45,6 +50,7 @@ public class ContaCorrente extends Conta {
         }
     }
 
+    //Sobrescrição do Método de Saque
     @Override
     public void sacar(double valor){
         cobrarTaxaManutencaoMensal();
@@ -64,6 +70,7 @@ public class ContaCorrente extends Conta {
         }
     }
 
+    //Definição do Método de Geração de Extrato
     @Override
     public void gerarExtrato(){
         System.out.println("\n===== EXTRATO ===== \n");

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 public abstract class Conta {
     
+    //Formatador de Data
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     
     public static DateTimeFormatter getFormatter() {
@@ -18,6 +19,7 @@ public abstract class Conta {
     protected double saldo;
     protected LocalDate dataCriacao;
 
+    //Construtores
     public Conta(String numeroDaConta, String titular, double saldo){
         this.numeroDaConta = numeroDaConta;
         this.titular = titular;
@@ -25,7 +27,8 @@ public abstract class Conta {
         this.dataCriacao = LocalDate.now();
     }
 
-    public LocalDate getDataCriacao() { // Getter para o novo atributo
+    //Getters
+    public LocalDate getDataCriacao() {
         return dataCriacao;
     }
 
@@ -41,6 +44,7 @@ public abstract class Conta {
         return saldo;
     }
 
+    //Setters
     public void setNumeroDaConta(String numeroDaConta){
         this.numeroDaConta = numeroDaConta;
     }
@@ -53,7 +57,7 @@ public abstract class Conta {
         this.saldo = saldo;
     }
 
-    //Métodos
+    //Método de Depósito
     public void depositar(double valor){
         if(valor > 0){
             LocalDateTime agora = LocalDateTime.now();
@@ -66,6 +70,7 @@ public abstract class Conta {
         }
     }
 
+    //Método de Saque
     public void sacar(double valor){
         if(valor > 0 && this.saldo >= valor){
             LocalDateTime agora = LocalDateTime.now();
@@ -78,5 +83,7 @@ public abstract class Conta {
         }
     }
 
+    //Método Abstrato de Extrato
     public abstract void gerarExtrato();
+
 }
