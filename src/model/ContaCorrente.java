@@ -2,7 +2,6 @@ package model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class ContaCorrente extends Conta {
 
@@ -67,7 +66,7 @@ public class ContaCorrente extends Conta {
 
     @Override
     public void gerarExtrato(){
-        System.out.println("\nExtrato: \n");
+        System.out.println("\n===== EXTRATO ===== \n");
         System.out.printf("Número da Conta: %s\n", this.numeroDaConta);
         System.out.printf("Titular: %s\n", this.titular);
         System.out.printf("Saldo: R$ %.2f\n", this.saldo);
