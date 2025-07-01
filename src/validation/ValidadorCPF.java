@@ -1,5 +1,6 @@
 package validation;
 
+<<<<<<< HEAD
 public class ValidadorCPF {
 	private String cpf;
 
@@ -51,3 +52,9 @@ public class ValidadorCPF {
 		else System.out.println("CPF INVÁLIDO");
 	}
 }
+=======
+public class ValidadorCPF () {
+
+
+}
+>>>>>>> sergio
