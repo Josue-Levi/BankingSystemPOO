@@ -23,6 +23,7 @@ public class PessoaFisica {
         this.Nascimento = Nascimento;
         this.NomePessoa = NomePessoa;
         this.Email = Email;
+        this.Senha = Senha;
         this.Telefone = Telefone;
     }
 
