@@ -38,7 +38,8 @@ public class GeradorCC {
 
     @Override
     public String toString() {
-        return "Banco: " + this.codigoBanco + "\nAgência: " + this.agencia +
-                "\nOperação: " + this.codigoOperar + "\nConta Corrente: " + this.numeroConta;
+        return "\n===== CONTA GERADA =====\n" +
+                "Banco: " + this.codigoBanco + "\nAgência: " + this.agencia +
+                "\nOperação: " + this.codigoOperar + "\nNúmero da Conta: " + this.numeroConta;
     }
 }
