@@ -11,8 +11,8 @@ public abstract class Conta {
     
     public static DateTimeFormatter getFormatter() {
     return FORMATTER;
+    }
 
-}
     //Atributos
     protected String numeroDaConta;
     protected String titular;
