@@ -14,10 +14,11 @@ public class PessoaFisica {
     protected int Numero;
     protected String Complemento;
     protected String CEP;
+    protected String Senha;
 
     
     //construtores;
-    public PessoaFisica(String NomePessoa, String Nascimento, String CPF, String Email, String Telefone){
+    public PessoaFisica(String NomePessoa, String Nascimento, String CPF, String Email, String Senha, String Telefone){
         this.CPF = CPF;
         this.Nascimento = Nascimento;
         this.NomePessoa = NomePessoa;
@@ -43,6 +44,7 @@ public class PessoaFisica {
         System.out.println("CPF: " + CPF);
         System.out.println("Data de Nascimento: " + Nascimento);
         System.out.println("Email: " + Email);
+        System.out.println("Senha: " + Senha);
         System.out.println("Telefone: " + Telefone);
         System.out.println("===== INFORMAÇÕES RESIDENCIAL =====");
         System.out.println("Estado: " + Estado);
