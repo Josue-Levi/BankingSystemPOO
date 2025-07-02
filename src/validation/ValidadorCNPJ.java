@@ -1,13 +1,8 @@
 package validation;
 
 public class ValidadorCNPJ {
-	private String cnpj;
-
-	public ValidadorCPF(String cnpj){
-		this.cnpj = cnpj;
-	}
 	
-	public void validarCNPJ{
+	public void validarCNPJ(String cnpj){
 		String cnpjDigitos = cnpj.replaceAll("[^0-9]", "");
 		if (cnpjDigitos.length() != 14) System.out.println("CNPJ ÍNVALIDO!");
 			

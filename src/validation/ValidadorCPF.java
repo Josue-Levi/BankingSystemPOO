@@ -1,13 +1,8 @@
 package validation;
 
 public class ValidadorCPF {
-	private String cpf;
 
-	public ValidadorCPF(String cpf){
-		this.cpf = cpf;
-	}
-
-	public void validarCPF () {
+	public void validarCPF(String cpf) {
 		String cpfDigitos = cpf.replaceAll("[^0-9]", "");
 		if (cpfDigitos.length() != 11) System.out.println("CPF ÍNVALIDO!");
 			
