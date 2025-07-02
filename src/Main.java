@@ -1,9 +1,9 @@
 import clients.CadastroPessoaFisica;
 import clients.CadastroPessoaJuridica;
 import validation.GeradorCC;
-import model.Conta;
-import model.ContaCorrente;
-import model.ContaPoupanca;
+//import model.Conta;
+//import model.ContaCorrente;
+//import model.ContaPoupanca;
 
 import java.util.Scanner;
 

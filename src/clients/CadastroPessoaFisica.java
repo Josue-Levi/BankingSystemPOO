@@ -1,4 +1,13 @@
 package clients;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+
 import java.util.Scanner;
 
 public class CadastroPessoaFisica {
@@ -59,6 +68,21 @@ public class CadastroPessoaFisica {
 
         // exibir dados inseridos pela pessoa fisica
         pessoa.ExibirDadosPessoaFisica();
+
+        //Salva em .Json
+
+         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(pessoa);
+
+        try {
+            FileWriter writer = new FileWriter("pessoas.json", true);
+            writer.write(json + ",\n");
+            writer.close();
+            System.out.println("✅ Dados salvos com sucesso!");
+        } catch (IOException e) {
+            System.out.println("❌ Erro ao salvar os dados no arquivo JSON: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         scanner.close();
     }
