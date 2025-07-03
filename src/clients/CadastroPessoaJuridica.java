@@ -1,10 +1,11 @@
 package clients;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import validation.GeradorCC;
+import java.util.Scanner;
+
 
 public class CadastroPessoaJuridica {
     public static void CadastrarPessoaJuridica() {
@@ -66,6 +67,9 @@ public class CadastroPessoaJuridica {
 
         // criação do objeto com dados da localização da empresa
         pessoa.setEndereco(estado, cidade, bairro, rua, numero, complemento, cep);
+
+        GeradorCC conta1 = new GeradorCC();
+        System.out.println(conta1);
 
         // exibir dados cadastrado pela pessoa juridica
         pessoa.ExibirDadosPessoaJuridica();

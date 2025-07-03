@@ -27,13 +27,10 @@ public class Main {
                     CadastroPessoaJuridica.CadastrarPessoaJuridica();
                     break;
             }
-            GeradorCC conta1 = new GeradorCC();
-            System.out.println(conta1);
         } else if(criarEntrar == 2){
 
         }
-
-
+        
         scanner.close();
     }
 }

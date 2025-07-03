@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+import validation.GeradorCC;
 import java.util.Scanner;
 
 public class CadastroPessoaFisica {
@@ -67,6 +68,12 @@ public class CadastroPessoaFisica {
 
         // exibir dados inseridos pela pessoa fisica
         pessoa.ExibirDadosPessoaFisica();
+
+        // gerar conta 
+        GeradorCC conta1 = new GeradorCC();
+        System.out.println(conta1);
+
+        pessoa.setConta(conta1);
 
         //Salva em .Json
 

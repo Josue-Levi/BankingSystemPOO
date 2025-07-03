@@ -13,7 +13,7 @@ public class GeradorCC {
         this.agencia = "1430";
         this.codigoBanco = "345";
         this.codigoOperar = "001";
-        this.numeroConta = gerarConta();
+        this.numeroConta = gerarConta();   
     }
 
     private String gerarConta(){
@@ -41,5 +41,21 @@ public class GeradorCC {
         return "\n===== CONTA GERADA =====\n" +
                 "Banco: " + this.codigoBanco + "\nAgência: " + this.agencia +
                 "\nOperação: " + this.codigoOperar + "\nNúmero da Conta: " + this.numeroConta;
+    }
+    // sets e gets
+    public String getNumeroConta() {
+    return numeroConta;
+    }
+
+    public String getAgencia() {
+        return agencia;
+    }
+
+    public String getCodigoBanco() {
+        return codigoBanco;
+    }
+
+    public String getCodigoOperar() {
+        return codigoOperar;
     }
 }
