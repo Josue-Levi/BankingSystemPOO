@@ -1,6 +1,7 @@
 import clients.CadastroPessoaFisica;
 import clients.CadastroPessoaJuridica;
-import validation.GeradorCC;
+import clients.PessoaFisica;
+import clients.PessoaJuridica;
 import model.Conta;
 import model.ContaCorrente;
 import model.ContaPoupanca;
@@ -37,3 +38,11 @@ public class Main {
         scanner.close();
     }
 }
+
+public static void exibirMenuPrincipal() {
+        System.out.println("\n===== MENU PRINCIPAL =====");
+        System.out.println("1. Abrir Nova Conta");
+        System.out.println("2. Entrar em Conta Existente");
+        System.out.println("0. Sair");
+        System.out.print("Escolha uma opção: ");
+    }

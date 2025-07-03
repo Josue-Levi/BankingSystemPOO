@@ -35,6 +35,14 @@ public class PessoaFisica {
         this.CEP = CEP;
     }
 
+    //Getters
+    public String getNomePessoa(){
+        return NomePessoa;
+    }
+
+    public String getCPF(){
+        return CPF;
+    }
     //metodos
     public void ExibirDadosPessoaFisica(){
         System.out.println("\nDADOS CADASTRADOS:");

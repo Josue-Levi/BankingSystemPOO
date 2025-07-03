@@ -11,6 +11,15 @@ public class PessoaJuridica extends PessoaFisica{
         this.RazaoSocial = RazaoSocial;
     }
 
+    //Getters
+    public String getRazaoSocial(){
+        return RazaoSocial;
+    }
+    
+    public String getCNPJ(){
+        return CNPJ;
+    }
+
     @Override
     public void setEndereco(String Estado, String Cidade, String Bairro, String Rua, int Numero, String Complemento, String CEP) {
         super.setEndereco(Estado, Cidade, Bairro, Rua, Numero, Complemento, CEP);
