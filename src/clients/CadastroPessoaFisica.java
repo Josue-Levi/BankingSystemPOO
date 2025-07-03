@@ -20,11 +20,14 @@ public class CadastroPessoaFisica {
         System.out.print("Email: ");
         String email = scanner.nextLine();
 
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
+
         System.out.print("Telefone: ");
         String telefone = scanner.nextLine();
 
         // criação do objeto com dados pessoais
-        PessoaFisica pessoa = new PessoaFisica(nome, nascimento, cpf, email, telefone);
+        PessoaFisica pessoa = new PessoaFisica(nome, nascimento, cpf, email, senha, telefone);
 
         // entrada dos dados de endereço
         System.out.println("\n===== CADASTRO DE ENDEREÇO =====");
@@ -43,7 +46,7 @@ public class CadastroPessoaFisica {
 
         System.out.print("Número: ");
         int numero = scanner.nextInt();
-        scanner.nextLine(); // limpa o buffer
+        scanner.nextLine();
 
         System.out.print("Complemento: ");
         String complemento = scanner.nextLine();

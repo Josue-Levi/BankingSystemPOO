@@ -18,6 +18,9 @@ public class CadastroPessoaJuridica {
         System.out.print("Email: ");
         String email = scanner.nextLine();
 
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
+
         System.out.print("Telefone: ");
         String telefone = scanner.nextLine();
 
@@ -29,7 +32,7 @@ public class CadastroPessoaJuridica {
         String CNPJ = scanner.nextLine();
 
         // criação do objeto com dados pessoais
-        PessoaJuridica pessoa = new PessoaJuridica(nome, nascimento, cpf, email, telefone, CNPJ, razaosocial);
+        PessoaJuridica pessoa = new PessoaJuridica(nome, nascimento, cpf, email, senha, telefone, CNPJ, razaosocial);
 
         // entrada dos dados de endereço
         System.out.println("\n===== CADASTRO DE LOCALIZAÇÃO DA EMPRESA =====");
@@ -48,7 +51,7 @@ public class CadastroPessoaJuridica {
 
         System.out.print("Número: ");
         int numero = scanner.nextInt();
-        scanner.nextLine(); // limpa o buffer
+        scanner.nextLine();
 
         System.out.print("Complemento: ");
         String complemento = scanner.nextLine();
