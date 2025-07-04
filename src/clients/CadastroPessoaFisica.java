@@ -2,10 +2,11 @@ package clients;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.util.*;
 
 import validation.GeradorCC;
 import java.util.Scanner;
@@ -69,6 +70,7 @@ public class CadastroPessoaFisica {
         // exibir dados inseridos pela pessoa fisica
         pessoa.ExibirDadosPessoaFisica();
 
+
         // gerar conta 
         GeradorCC conta1 = new GeradorCC();
         System.out.println(conta1);
@@ -76,19 +78,29 @@ public class CadastroPessoaFisica {
         pessoa.setConta(conta1);
 
         //Salva em .Json
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(pessoa);
-
         try {
-            FileWriter writer = new FileWriter("src/clients/CadastrosFisica.json", true);
-            writer.write(json + ",\n");
+            File file = new File("src/clients/CadastrosFisica.json");
+            List<PessoaFisica> pessoas = new ArrayList<>();
+
+            if (file.exists() && file.length() > 0) {
+                FileReader reader = new FileReader(file);
+                Type listType = new TypeToken<List<PessoaFisica>>() {}.getType();
+                pessoas = new Gson().fromJson(reader, listType);
+                reader.close();
+            }
+
+            pessoas.add(pessoa);
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            FileWriter writer = new FileWriter(file);
+            gson.toJson(pessoas, writer);
             writer.close();
+
             System.out.println("Dados salvos com sucesso!");
         } catch (IOException e) {
-            System.out.println("Erro ao salvar os dados no arquivo JSON: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Erro ao salvar os dados: " + e.getMessage());
         }
+
 
         scanner.close();
     }

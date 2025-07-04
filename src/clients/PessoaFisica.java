@@ -62,6 +62,15 @@ public class PessoaFisica {
         System.out.println("CEP: " + CEP);
     }
 
+    //Getters e Setters
+    public String getEmail() {
+        return Email;
+    }
+
+    public String getSenha() {
+        return Senha;
+    }
+
     public boolean ValidarEmail(String Email){
         if(Email !=  null && Email.toLowerCase().endsWith("@gmail.com")){
             return true;
