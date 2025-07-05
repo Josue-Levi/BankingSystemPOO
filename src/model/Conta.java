@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
+import clients.PessoaFisica;
+import clients.PessoaJuridica;
+import validation.GeradorCC;
+
 public abstract class Conta {
     
     //Formatador de Data
@@ -11,20 +15,43 @@ public abstract class Conta {
     
     public static DateTimeFormatter getFormatter() {
     return FORMATTER;
+    }
 
-}
     //Atributos
     protected String numeroDaConta;
-    protected String titular;
+    protected String agencia;
+    protected String codigoBanco;
+    protected String codigoOperacao;
+    protected Object titular;
     protected double saldo;
     protected LocalDate dataCriacao;
 
     //Construtores
-    public Conta(String numeroDaConta, String titular, double saldo){
-        this.numeroDaConta = numeroDaConta;
+    public Conta(Object titular, double saldoInicial) {
         this.titular = titular;
-        this.saldo = saldo;
+        this.saldo = saldoInicial;
         this.dataCriacao = LocalDate.now();
+    
+
+    GeradorCC gerador = new GeradorCC();
+    this.numeroDaConta = gerador.getNumeroConta();
+    this.agencia = gerador.getAgencia();
+    this.codigoBanco = gerador.getCodigoBanco();
+    this.codigoOperacao = gerador.getCodigoOperar();
+
+    System.out.println("\n===== CONTA CRIADA COM SUCESSO! =====");
+        if (titular instanceof PessoaFisica) {
+            System.out.println("Titular: " + ((PessoaFisica) titular).getNomePessoa());
+        } else if (titular instanceof PessoaJuridica) {
+            System.out.println("Titular (Responsável): " + ((PessoaJuridica) titular).getNomePessoa());
+            System.out.println("Razão Social: " + ((PessoaJuridica) titular).getRazaoSocial());
+        }
+        System.out.println("Número da Conta: " + this.numeroDaConta);
+        System.out.println("Agência: " + this.agencia);
+        System.out.println("Banco: " + this.codigoBanco);
+        System.out.println("Operação: " + this.codigoOperacao);
+        System.out.printf("Saldo Inicial: R$ %.2f\n", this.saldo);
+        System.out.println("---------------------------------");
     }
 
     //Getters
@@ -34,10 +61,6 @@ public abstract class Conta {
 
     public String getNumeroDaConta(){
         return numeroDaConta;
-    }
-
-    public String getTitular(){
-        return titular;
     }
 
     public double getSaldo(){
