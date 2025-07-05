@@ -1,13 +1,9 @@
 package validation;
 
 public class ValidadorCNPJ {
-	private String cnpj;
-
-	public ValidadorCNPJ(String cnpj){
-		this.cnpj = cnpj;
-	}
 	
-	public void validarCNPJ{
+	public static boolean validarCNPJ(String cnpj){
+		boolean CNPJvalido;
 		String cnpjDigitos = cnpj.replaceAll("[^0-9]", "");
 		if (cnpjDigitos.length() != 14) System.out.println("CNPJ ÍNVALIDO!");
 			
@@ -42,7 +38,13 @@ public class ValidadorCNPJ {
 		int digitocnpj1 = Character.getNumericValue(cnpjDigitos.charAt(12));
 		int digitocnpj2 = Character.getNumericValue(cnpjDigitos.charAt(13));
 			
-		if (divisao1 == digitocnpj1 && divisao2 == digitocnpj2) System.out.println("CNPJ VÁLIDO");
-		else System.out.println("CNPJ INVÁLIDO");
+		if (divisao1 == digitocnpj1 && divisao2 == digitocnpj2){
+			System.out.println("CNPJ válido.");
+			CNPJvalido = true;
+		} else {
+			System.out.println("CNPJ inválido. Tente novamente.");
+			CNPJvalido = false;
+		}
+		return CNPJvalido;
 	}	
 }

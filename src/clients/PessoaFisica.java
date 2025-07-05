@@ -14,14 +14,16 @@ public class PessoaFisica {
     protected int Numero;
     protected String Complemento;
     protected String CEP;
+    protected String Senha;
 
     
     //construtores;
-    public PessoaFisica(String NomePessoa, String Nascimento, String CPF, String Email, String Telefone){
+    public PessoaFisica(String NomePessoa, String Nascimento, String CPF, String Email, String Senha, String Telefone){
         this.CPF = CPF;
         this.Nascimento = Nascimento;
         this.NomePessoa = NomePessoa;
         this.Email = Email;
+        this.Senha = Senha;
         this.Telefone = Telefone;
     }
 
@@ -35,6 +37,23 @@ public class PessoaFisica {
         this.CEP = CEP;
     }
 
+    //Getters
+    public String getNomePessoa(){
+        return NomePessoa;
+    }
+
+    public String getCPF(){
+        return CPF;
+    }
+
+    public String getEmail(){
+        return Email;
+    }
+    
+    public String getSenha(){
+        return Senha;
+    }
+
     //metodos
     public void ExibirDadosPessoaFisica(){
         System.out.println("\nDADOS CADASTRADOS:");
@@ -43,6 +62,7 @@ public class PessoaFisica {
         System.out.println("CPF: " + CPF);
         System.out.println("Data de Nascimento: " + Nascimento);
         System.out.println("Email: " + Email);
+        System.out.println("Senha: " + Senha);
         System.out.println("Telefone: " + Telefone);
         System.out.println("===== INFORMAÇÕES RESIDENCIAL =====");
         System.out.println("Estado: " + Estado);

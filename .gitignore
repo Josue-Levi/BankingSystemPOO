@@ -1,1 +1,9 @@
+<<<<<<< HEAD
 bin
+=======
+bin/
+src/*.class
+model/*.class
+service/*.class
+validation/*.class
+>>>>>>> sergio

@@ -1,9 +1,15 @@
 package clients;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
-public class PessoaJuridicaMain {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import validation.ValidadorCNPJ;
+
+public class CadastroPessoaJuridica {
+    public static PessoaJuridica CadastrarPessoaJuridica(Scanner scanner) {
         System.out.println("===== CADASTRO DE PESSOA JURIDICA =====");
         //entrada dos dados pessoais
         System.out.print("Nome: ");
@@ -18,6 +24,9 @@ public class PessoaJuridicaMain {
         System.out.print("Email: ");
         String email = scanner.nextLine();
 
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
+
         System.out.print("Telefone: ");
         String telefone = scanner.nextLine();
 
@@ -25,11 +34,23 @@ public class PessoaJuridicaMain {
         System.out.println("===== CADASTRO DE INFORMAÇÕES DA EMPRESA =====");
         System.out.print("Razão Social: ");
         String razaosocial = scanner.nextLine();
-        System.out.print("CNPJ: ");
-        String CNPJ = scanner.nextLine();
+        
+
+        String CNPJ;
+        boolean CNPJvalido = false;
+        do {
+            System.out.println("Digite o CNPJ (apenas números): ");
+            CNPJ = scanner.nextLine();
+            if(ValidadorCNPJ.validarCNPJ(CNPJ)){
+                CNPJvalido = true;
+            } else {
+                CNPJvalido = false;
+            }
+        } while (!CNPJvalido);
+
 
         // criação do objeto com dados pessoais
-        PessoaJuridica pessoa = new PessoaJuridica(nome, nascimento, cpf, email, telefone, CNPJ, razaosocial);
+        PessoaJuridica pessoa = new PessoaJuridica(nome, nascimento, cpf, email, senha, telefone, CNPJ, razaosocial);
 
         // entrada dos dados de endereço
         System.out.println("\n===== CADASTRO DE LOCALIZAÇÃO DA EMPRESA =====");
@@ -48,7 +69,7 @@ public class PessoaJuridicaMain {
 
         System.out.print("Número: ");
         int numero = scanner.nextInt();
-        scanner.nextLine(); // limpa o buffer
+        scanner.nextLine();
 
         System.out.print("Complemento: ");
         String complemento = scanner.nextLine();
@@ -62,6 +83,18 @@ public class PessoaJuridicaMain {
         // exibir dados cadastrado pela pessoa juridica
         pessoa.ExibirDadosPessoaJuridica();
 
-        scanner.close();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(pessoa);
+
+        try {
+            FileWriter writer = new FileWriter("src/clients/CadastrosJuridico.json", true);
+            writer.write(json + ",\n");
+            writer.close();
+            System.out.println("Dados salvos com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar os dados no arquivo JSON: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return pessoa;
     }
 }

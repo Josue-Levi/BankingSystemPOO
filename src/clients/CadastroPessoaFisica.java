@@ -1,9 +1,19 @@
 package clients;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import validation.ValidadorCPF;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
-public class PessoaFisicaMain {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+
+public class CadastroPessoaFisica {
+    //metodo
+    public static PessoaFisica CadastrarPessoaFisica(Scanner scanner){
+
         System.out.println("===== CADASTRO DE PESSOA FÍSICA =====");
         // entrada dos dados pessoais
         System.out.print("Nome: ");
@@ -12,17 +22,29 @@ public class PessoaFisicaMain {
         System.out.print("Data de nascimento (dd/mm/aaaa): ");
         String nascimento = scanner.nextLine();
 
-        System.out.print("CPF: ");
-        String cpf = scanner.nextLine();
+        String CPF;
+        boolean CPFvalido = false;
+        do {
+            System.out.println("CPF (apenas números): ");
+            CPF = scanner.nextLine();
+            if (ValidadorCPF.validarCPF(CPF) == true){
+                CPFvalido = true;
+            } else {
+                CPFvalido = false;
+            }
+        } while (!CPFvalido);
 
         System.out.print("Email: ");
         String email = scanner.nextLine();
+
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
 
         System.out.print("Telefone: ");
         String telefone = scanner.nextLine();
 
         // criação do objeto com dados pessoais
-        PessoaFisica pessoa = new PessoaFisica(nome, nascimento, cpf, email, telefone);
+        PessoaFisica pessoa = new PessoaFisica(nome, nascimento, CPF, email, senha, telefone);
 
         // entrada dos dados de endereço
         System.out.println("\n===== CADASTRO DE ENDEREÇO =====");
@@ -41,7 +63,7 @@ public class PessoaFisicaMain {
 
         System.out.print("Número: ");
         int numero = scanner.nextInt();
-        scanner.nextLine(); // limpa o buffer
+        scanner.nextLine();
 
         System.out.print("Complemento: ");
         String complemento = scanner.nextLine();
@@ -55,7 +77,21 @@ public class PessoaFisicaMain {
         // exibir dados inseridos pela pessoa fisica
         pessoa.ExibirDadosPessoaFisica();
 
-        scanner.close();
+        //Salva em .Json
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(pessoa);
+
+        try {
+            FileWriter writer = new FileWriter("src/clients/CadastrosFisica.json", true);
+            writer.write(json + ",\n");
+            writer.close();
+            System.out.println("Dados salvos com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar os dados no arquivo JSON: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return pessoa;
     }
 }
 

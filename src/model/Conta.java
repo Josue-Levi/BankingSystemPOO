@@ -4,28 +4,62 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
+import clients.PessoaFisica;
+import clients.PessoaJuridica;
+import validation.Gerador;
+
 public abstract class Conta {
     
+    //Formatador de Data
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     
     public static DateTimeFormatter getFormatter() {
     return FORMATTER;
-
-}
-    //Atributos
-    protected String numeroDaConta;
-    protected String titular;
-    protected double saldo;
-    protected LocalDate dataCriacao;
-
-    public Conta(String numeroDaConta, String titular, double saldo){
-        this.numeroDaConta = numeroDaConta;
-        this.titular = titular;
-        this.saldo = saldo;
-        this.dataCriacao = LocalDate.now();
     }
 
-    public LocalDate getDataCriacao() { // Getter para o novo atributo
+    //Atributos
+    protected String numeroDaConta;
+    protected String agencia;
+    protected String codigoBanco;
+    protected String codigoOperacao;
+    protected Object titular;
+    protected double saldo;
+    protected LocalDateTime dataCriacao;
+
+    //Construtores
+    public Conta(Object titular, double saldoInicial) {
+        this.titular = titular;
+        this.saldo = saldoInicial;
+        this.dataCriacao = LocalDateTime.now();
+    
+
+    Gerador gerador = new Gerador();
+    this.numeroDaConta = gerador.getNumeroConta();
+    this.agencia = gerador.getAgencia();
+    this.codigoBanco = gerador.getCodigoBanco();
+    this.codigoOperacao = gerador.getCodigoOperar();
+
+    System.out.println("\n===== CONTA CRIADA COM SUCESSO! =====");
+        if (titular instanceof PessoaFisica) {
+            System.out.println("Titular: " + ((PessoaFisica) titular).getNomePessoa());
+        } else if (titular instanceof PessoaJuridica) {
+            System.out.println("Titular (Responsável): " + ((PessoaJuridica) titular).getNomePessoa());
+            System.out.println("Razão Social: " + ((PessoaJuridica) titular).getRazaoSocial());
+        }
+        System.out.println("Número da Conta: " + this.numeroDaConta);
+        System.out.println("Agência: " + this.agencia);
+        System.out.println("Banco: " + this.codigoBanco);
+        System.out.println("Operação: " + this.codigoOperacao);
+        System.out.printf("Saldo Inicial: R$ %.2f\n", this.saldo);
+        System.out.println("---------------------------------");
+    }
+
+    //Getters
+    public Object getTitular(){
+        return titular;
+    }
+    
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
@@ -33,14 +67,11 @@ public abstract class Conta {
         return numeroDaConta;
     }
 
-    public String getTitular(){
-        return titular;
-    }
-
     public double getSaldo(){
         return saldo;
     }
 
+    //Setters
     public void setNumeroDaConta(String numeroDaConta){
         this.numeroDaConta = numeroDaConta;
     }
@@ -53,7 +84,7 @@ public abstract class Conta {
         this.saldo = saldo;
     }
 
-    //Métodos
+    //Método de Depósito
     public void depositar(double valor){
         if(valor > 0){
             LocalDateTime agora = LocalDateTime.now();
@@ -66,6 +97,7 @@ public abstract class Conta {
         }
     }
 
+    //Método de Saque
     public void sacar(double valor){
         if(valor > 0 && this.saldo >= valor){
             LocalDateTime agora = LocalDateTime.now();
@@ -78,5 +110,7 @@ public abstract class Conta {
         }
     }
 
+    //Método Abstrato de Extrato
     public abstract void gerarExtrato();
+
 }

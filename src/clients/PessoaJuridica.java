@@ -5,10 +5,19 @@ public class PessoaJuridica extends PessoaFisica{
     protected String CNPJ;
     protected String RazaoSocial;
 
-    public PessoaJuridica(String NomePessoa, String Nascimento, String CPF, String Email, String Telefone, String CNPJ, String RazaoSocial){
-        super(NomePessoa, Nascimento, CPF, Email, Telefone);
+    public PessoaJuridica(String NomePessoa, String Nascimento, String CPF, String Email,String Senha, String Telefone, String CNPJ, String RazaoSocial){
+        super(NomePessoa, Nascimento, CPF, Email, Senha, Telefone);
         this.CNPJ = CNPJ;
         this.RazaoSocial = RazaoSocial;
+    }
+
+    //Getters
+    public String getRazaoSocial(){
+        return RazaoSocial;
+    }
+    
+    public String getCNPJ(){
+        return CNPJ;
     }
 
     @Override
@@ -23,6 +32,7 @@ public class PessoaJuridica extends PessoaFisica{
         System.out.println("CPF: " + CPF);
         System.out.println("Data de Nascimento: " + Nascimento);
         System.out.println("Email: " + Email);
+        System.out.println("Senha: " + Senha);
         System.out.println("Telefone: " + Telefone);
         System.out.println("===== INFORMAÇÕES DA EMPRESA =====");
         System.out.println("Responsável: " + NomePessoa);
