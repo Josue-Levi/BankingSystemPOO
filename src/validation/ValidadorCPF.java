@@ -1,8 +1,9 @@
 package validation;
 
 public class ValidadorCPF {
-
-	public void validarCPF(String cpf) {
+	
+	public static boolean validarCPF(String cpf) {
+		boolean CPFvalido;
 		String cpfDigitos = cpf.replaceAll("[^0-9]", "");
 		if (cpfDigitos.length() != 11) System.out.println("CPF ÍNVALIDO!");
 			
@@ -42,7 +43,13 @@ public class ValidadorCPF {
 		int digitoCPF1 = Character.getNumericValue(digitoCPF.charAt(0));
 		int digitoCPF2 = Character.getNumericValue(digitoCPF.charAt(1));
 			
-		if (divisao1 == digitoCPF1 && divisao2 == digitoCPF2) System.out.println("CPF VÁLIDO");
-		else System.out.println("CPF INVÁLIDO");
+		if (divisao1 == digitoCPF1 && divisao2 == digitoCPF2) {
+			System.out.println("CPF válido.");
+			CPFvalido = true;
+		} else {
+			System.out.println("CPF inválido. Tente novamente.");
+			CPFvalido = false;
+		}
+		return CPFvalido;
 	}
 }

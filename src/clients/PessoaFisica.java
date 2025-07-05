@@ -45,6 +45,15 @@ public class PessoaFisica {
     public String getCPF(){
         return CPF;
     }
+
+    public String getEmail(){
+        return Email;
+    }
+    
+    public String getSenha(){
+        return Senha;
+    }
+
     //metodos
     public void ExibirDadosPessoaFisica(){
         System.out.println("\nDADOS CADASTRADOS:");

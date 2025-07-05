@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 import clients.PessoaFisica;
 import clients.PessoaJuridica;
-import validation.GeradorCC;
+import validation.Gerador;
 
 public abstract class Conta {
     
@@ -24,16 +24,16 @@ public abstract class Conta {
     protected String codigoOperacao;
     protected Object titular;
     protected double saldo;
-    protected LocalDate dataCriacao;
+    protected LocalDateTime dataCriacao;
 
     //Construtores
     public Conta(Object titular, double saldoInicial) {
         this.titular = titular;
         this.saldo = saldoInicial;
-        this.dataCriacao = LocalDate.now();
+        this.dataCriacao = LocalDateTime.now();
     
 
-    GeradorCC gerador = new GeradorCC();
+    Gerador gerador = new Gerador();
     this.numeroDaConta = gerador.getNumeroConta();
     this.agencia = gerador.getAgencia();
     this.codigoBanco = gerador.getCodigoBanco();
@@ -55,7 +55,11 @@ public abstract class Conta {
     }
 
     //Getters
-    public LocalDate getDataCriacao() {
+    public Object getTitular(){
+        return titular;
+    }
+    
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 

@@ -6,9 +6,10 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import validation.ValidadorCNPJ;
+
 public class CadastroPessoaJuridica {
-    public static void CadastrarPessoaJuridica() {
-        Scanner scanner = new Scanner(System.in);
+    public static PessoaJuridica CadastrarPessoaJuridica(Scanner scanner) {
         System.out.println("===== CADASTRO DE PESSOA JURIDICA =====");
         //entrada dos dados pessoais
         System.out.print("Nome: ");
@@ -33,8 +34,20 @@ public class CadastroPessoaJuridica {
         System.out.println("===== CADASTRO DE INFORMAÇÕES DA EMPRESA =====");
         System.out.print("Razão Social: ");
         String razaosocial = scanner.nextLine();
-        System.out.print("CNPJ: ");
-        String CNPJ = scanner.nextLine();
+        
+
+        String CNPJ;
+        boolean CNPJvalido = false;
+        do {
+            System.out.println("Digite o CNPJ (apenas números): ");
+            CNPJ = scanner.nextLine();
+            if(ValidadorCNPJ.validarCNPJ(CNPJ)){
+                CNPJvalido = true;
+            } else {
+                CNPJvalido = false;
+            }
+        } while (!CNPJvalido);
+
 
         // criação do objeto com dados pessoais
         PessoaJuridica pessoa = new PessoaJuridica(nome, nascimento, cpf, email, senha, telefone, CNPJ, razaosocial);
@@ -82,7 +95,6 @@ public class CadastroPessoaJuridica {
             System.out.println("Erro ao salvar os dados no arquivo JSON: " + e.getMessage());
             e.printStackTrace();
         }
-
-        scanner.close();
+        return pessoa;
     }
 }
