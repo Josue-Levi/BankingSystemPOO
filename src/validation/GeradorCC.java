@@ -4,10 +4,17 @@ import java.util.Random;
 
 public class GeradorCC {
     private String numeroConta;
-    private final String agencia = "1430";
-    private final String codigoBanco = "345";
-    private final String codigoOperar = "001";
+    private final String agencia;
+    private final String codigoBanco;
+    private final String codigoOperar;
     private static final Random random = new Random();
+
+    public GeradorCC (){
+        this.agencia = "1430";
+        this.codigoBanco = "345";
+        this.codigoOperar = "001";
+        this.numeroConta = gerarConta();   
+    }
 
     //Getters
     public String getNumeroConta(){

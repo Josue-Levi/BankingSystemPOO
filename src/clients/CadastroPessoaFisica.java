@@ -9,7 +9,8 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 import validation.GeradorCC;
-import java.util.Scanner;
+import model.ContaCorrente;
+import model.ContaPoupanca;
 
 public class CadastroPessoaFisica {
     //metodo
@@ -70,7 +71,19 @@ public class CadastroPessoaFisica {
         // exibir dados inseridos pela pessoa fisica
         pessoa.ExibirDadosPessoaFisica();
 
-
+        System.out.println("\n===== TIPOS DE CONTA =====");
+        System.out.println("[1] Conta Corrente");
+        System.out.println("[2] Conta Poupança");
+        int opcao = scanner.nextInt();
+        switch (opcao){
+            case 1:
+                ContaCorrente cc = new ContaCorrente(pessoa, (double) 0.0, (double) 500.0);
+                pessoa.setCC(cc);
+                break;
+            case 2:
+                ContaPoupanca cp = new ContaPoupanca(pessoa, 0.0);
+                pessoa.setCP(cp);
+        }
         // gerar conta 
         GeradorCC conta1 = new GeradorCC();
         System.out.println(conta1);

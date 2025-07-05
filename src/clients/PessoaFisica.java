@@ -1,4 +1,6 @@
 package clients;
+import model.ContaCorrente;
+import model.ContaPoupanca;
 import validation.GeradorCC;
 
 public class PessoaFisica {
@@ -17,6 +19,8 @@ public class PessoaFisica {
     protected String CEP;
     protected String Senha;
     private GeradorCC conta;
+    private ContaCorrente cc;
+    private ContaPoupanca cp;
 
     
     //construtores;
@@ -40,8 +44,16 @@ public class PessoaFisica {
     }
     
     public void setConta(GeradorCC conta) {
-    this.conta = conta;
-}
+        this.conta = conta;
+    }
+
+    public void setCC(ContaCorrente cc){
+        this.cc = cc;
+    }
+
+    public void setCP(ContaPoupanca cp){
+        this.cp = cp;
+    }
 
     //Getters
     public String getNomePessoa(){

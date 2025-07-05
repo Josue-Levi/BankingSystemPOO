@@ -14,7 +14,7 @@ import clients.PessoaJuridica;
 
 public class EntraConta {
 
-    public static void main(String[] args){
+    public static void EntrarConta(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("===== LOGIN CONTA =====");
         System.out.print("Email: ");
@@ -28,6 +28,7 @@ public class EntraConta {
         } else {
             System.out.println("Email ou senha inválidos.");
         }
+        scanner.close();
     }
 
     private static boolean verificarlogin(String email, String senha) {
