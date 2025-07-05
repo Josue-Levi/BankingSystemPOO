@@ -9,6 +9,7 @@ public class GeradorCC {
     private final String codigoOperar = "001";
     private static final Random random = new Random();
 
+<<<<<<< HEAD
     //Getters
     public String getNumeroConta(){
         return numeroConta;
@@ -24,6 +25,13 @@ public class GeradorCC {
 
     public String getCodigoOperar(){
         return codigoOperar;
+=======
+    public GeradorCC (){
+        this.agencia = "1430";
+        this.codigoBanco = "345";
+        this.codigoOperar = "001";
+        this.numeroConta = gerarConta();   
+>>>>>>> josue
     }
 
     private String gerarConta(){
@@ -51,5 +59,21 @@ public class GeradorCC {
         return "\n===== CONTA GERADA =====\n" +
                 "Banco: " + this.codigoBanco + "\nAgência: " + this.agencia +
                 "\nOperação: " + this.codigoOperar + "\nNúmero da Conta: " + this.numeroConta;
+    }
+    // sets e gets
+    public String getNumeroConta() {
+    return numeroConta;
+    }
+
+    public String getAgencia() {
+        return agencia;
+    }
+
+    public String getCodigoBanco() {
+        return codigoBanco;
+    }
+
+    public String getCodigoOperar() {
+        return codigoOperar;
     }
 }

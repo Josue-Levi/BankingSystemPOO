@@ -1,4 +1,5 @@
 package clients;
+import validation.GeradorCC;
 
 public class PessoaFisica {
     // atributos
@@ -15,6 +16,7 @@ public class PessoaFisica {
     protected String Complemento;
     protected String CEP;
     protected String Senha;
+    private GeradorCC conta;
 
     
     //construtores;
@@ -36,6 +38,10 @@ public class PessoaFisica {
         this.Complemento = Complemento;
         this.CEP = CEP;
     }
+    
+    public void setConta(GeradorCC conta) {
+    this.conta = conta;
+}
 
     //Getters
     public String getNomePessoa(){
@@ -62,6 +68,15 @@ public class PessoaFisica {
         System.out.println("Rua: "+ Rua +" Numero: " + Numero);
         System.out.println("Complemento: " + Complemento);
         System.out.println("CEP: " + CEP);
+    }
+
+    //Getters e Setters
+    public String getEmail() {
+        return Email;
+    }
+
+    public String getSenha() {
+        return Senha;
     }
 
     public boolean ValidarEmail(String Email){

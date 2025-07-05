@@ -1,15 +1,44 @@
-{
-  "CPF": "000000",
-  "Nascimento": "10052006",
-  "NomePessoa": "Josue Levi",
-  "Email": "josuelevi@gmail.com",
-  "Telefone": "85991690526",
-  "Estado": "",
-  "Cidade": "Fortaleza",
-  "Bairro": "Jangurussu",
-  "Rua": "Para",
-  "Numero": 849,
-  "Complemento": "Altos",
-  "CEP": "60440835",
-  "Senha": "8599312"
-},
+[
+  {
+    "CPF": "0",
+    "Nascimento": "0",
+    "NomePessoa": "Josue Levi",
+    "Email": "josuelevi98@gmail.com",
+    "Telefone": "0",
+    "Estado": "0",
+    "Cidade": "0",
+    "Bairro": "0",
+    "Rua": "0",
+    "Numero": 0,
+    "Complemento": "0",
+    "CEP": "0",
+    "Senha": "0800",
+    "conta": {
+      "numeroConta": "75506609-7",
+      "agencia": "1430",
+      "codigoBanco": "345",
+      "codigoOperar": "001"
+    }
+  },
+  {
+    "CPF": "0",
+    "Nascimento": "0",
+    "NomePessoa": "Sergio",
+    "Email": "sergio@gmail.com",
+    "Telefone": "0",
+    "Estado": "0",
+    "Cidade": "0",
+    "Bairro": "0",
+    "Rua": "0",
+    "Numero": 0,
+    "Complemento": "0",
+    "CEP": "0",
+    "Senha": "777",
+    "conta": {
+      "numeroConta": "69850737-4",
+      "agencia": "1430",
+      "codigoBanco": "345",
+      "codigoOperar": "001"
+    }
+  }
+]

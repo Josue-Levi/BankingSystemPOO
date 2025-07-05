@@ -1,9 +1,16 @@
 import clients.CadastroPessoaFisica;
 import clients.CadastroPessoaJuridica;
+<<<<<<< HEAD
 import validation.GeradorCC;
 import model.Conta;
 import model.ContaCorrente;
 import model.ContaPoupanca;
+=======
+//import validation.GeradorCC;
+//import model.Conta;
+//import model.ContaCorrente;
+//import model.ContaPoupanca;
+>>>>>>> josue
 
 import java.util.Scanner;
 
@@ -27,13 +34,10 @@ public class Main {
                     CadastroPessoaJuridica.CadastrarPessoaJuridica();
                     break;
             }
-            GeradorCC conta1 = new GeradorCC();
-            System.out.println(conta1);
         } else if(criarEntrar == 2){
 
         }
-
-
+        
         scanner.close();
     }
 }

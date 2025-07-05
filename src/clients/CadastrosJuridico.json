@@ -1,17 +1,19 @@
-{
-  "CNPJ": "0000",
-  "RazaoSocial": "0000",
-  "CPF": "00000",
-  "Nascimento": "10052006",
-  "NomePessoa": "Sergio ",
-  "Email": "0000",
-  "Telefone": "000",
-  "Estado": "000",
-  "Cidade": "000",
-  "Bairro": "000",
-  "Rua": "0",
-  "Numero": 0,
-  "Complemento": "0",
-  "CEP": "0",
-  "Senha": "0000"
-},
+[
+  {
+    "CNPJ": "0",
+    "RazaoSocial": "Josue Salgado",
+    "CPF": "0",
+    "Nascimento": "0",
+    "NomePessoa": "Josue",
+    "Email": "josuelevi99@gmail.com",
+    "Telefone": "0",
+    "Estado": "0",
+    "Cidade": "0",
+    "Bairro": "",
+    "Rua": "0",
+    "Numero": 0,
+    "Complemento": "0",
+    "CEP": "0",
+    "Senha": "0"
+  }
+]
