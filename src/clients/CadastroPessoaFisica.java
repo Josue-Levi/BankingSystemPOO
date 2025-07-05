@@ -3,7 +3,7 @@ package clients;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import validation.ValidadorCPF;
+import validation.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -34,8 +34,18 @@ public class CadastroPessoaFisica {
             }
         } while (!CPFvalido);
 
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
+        String email;
+        boolean emailvalido = false;
+        do{
+            System.out.println("Email:");
+            email = scanner.nextLine();
+            if(ValidadorEmail.ValidarEmail(email) == true){
+                emailvalido = true;
+            } else {
+                System.out.println("Email Invalido!");
+                emailvalido = false;
+            }
+        } while (!emailvalido);
 
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
