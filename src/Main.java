@@ -1,19 +1,11 @@
 import clients.CadastroPessoaFisica;
 import clients.CadastroPessoaJuridica;
-<<<<<<< HEAD
 import validation.GeradorCC;
 import model.Conta;
 import model.ContaCorrente;
 import model.ContaPoupanca;
-=======
-//import validation.GeradorCC;
-//import model.Conta;
-//import model.ContaCorrente;
-//import model.ContaPoupanca;
->>>>>>> josue
 
 import java.util.Scanner;
-
 
 public class Main {
     public static void main(String[] args){
