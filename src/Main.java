@@ -24,6 +24,8 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.*;
 
+import services.Transacao;
+
 public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
@@ -294,6 +296,7 @@ public class Main {
             System.out.println("[1] Depositar");
             System.out.println("[2] Sacar");
             System.out.println("[3] Gerar Extrato");
+            System.out.println("[4] Transferir para outra conta");
             System.out.println("[0] Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
             opcaoOperacao = escolherOpcao();
@@ -344,6 +347,17 @@ public class Main {
                 case 3:
                     conta.gerarExtrato();
                     break;
+                case 4:
+                System.out.print("Digite o número da conta de destino: ");
+                String contaDestino = scanner.nextLine();
+                System.out.print("Digite o valor para transferir: R$ ");
+                double valorTransferencia = scanner.nextDouble();
+                scanner.nextLine(); // limpar buffer
+
+                boolean sucesso = Transacao.transferir(contas, conta.getNumeroDaConta(), contaDestino, valorTransferencia);
+                if (sucesso) salvarDados();
+                break;
+
                 case 0:
                     System.out.println("Voltando ao Menu Principal...");
                     break;
