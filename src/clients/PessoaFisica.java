@@ -1,7 +1,6 @@
 package clients;
-import model.ContaCorrente;
-import model.ContaPoupanca;
-import validation.GeradorCC;
+
+import java.util.Objects;
 
 public class PessoaFisica {
     // atributos
@@ -18,12 +17,8 @@ public class PessoaFisica {
     protected String Complemento;
     protected String CEP;
     protected String Senha;
-    private GeradorCC conta;
-    private ContaCorrente cc;
-    private ContaPoupanca cp;
 
-    
-    //construtores;
+    // construtores;
     public PessoaFisica(String NomePessoa, String Nascimento, String CPF, String Email, String Senha, String Telefone){
         this.CPF = CPF;
         this.Nascimento = Nascimento;
@@ -42,20 +37,8 @@ public class PessoaFisica {
         this.Complemento = Complemento;
         this.CEP = CEP;
     }
-    
-    public void setConta(GeradorCC conta) {
-        this.conta = conta;
-    }
 
-    public void setCC(ContaCorrente cc){
-        this.cc = cc;
-    }
-
-    public void setCP(ContaPoupanca cp){
-        this.cp = cp;
-    }
-
-    //Getters
+    // Getters
     public String getNomePessoa(){
         return NomePessoa;
     }
@@ -63,7 +46,48 @@ public class PessoaFisica {
     public String getCPF(){
         return CPF;
     }
-    //metodos
+
+    public String getEmail(){
+        return Email;
+    }
+
+    public String getSenha(){
+        return Senha;
+    }
+
+    public String getTelefone() {
+        return Telefone;
+    }
+
+    public String getEstado() {
+        return Estado;
+    }
+
+    public String getCidade() {
+        return Cidade;
+    }
+
+    public String getBairro() {
+        return Bairro;
+    }
+
+    public String getRua() {
+        return Rua;
+    }
+
+    public int getNumero() {
+        return Numero;
+    }
+
+    public String getComplemento() {
+        return Complemento;
+    }
+
+    public String getCEP() {
+        return CEP;
+    }
+
+    // metodos
     public void ExibirDadosPessoaFisica(){
         System.out.println("\nDADOS CADASTRADOS:");
         System.out.println("===== INFORMAÇÕES PESSOAIS =====");
@@ -71,7 +95,7 @@ public class PessoaFisica {
         System.out.println("CPF: " + CPF);
         System.out.println("Data de Nascimento: " + Nascimento);
         System.out.println("Email: " + Email);
-        System.out.println("Senha: " + Senha);
+        System.out.println("Senha: " + Senha); // Em um sistema real, a senha não seria exibida
         System.out.println("Telefone: " + Telefone);
         System.out.println("===== INFORMAÇÕES RESIDENCIAL =====");
         System.out.println("Estado: " + Estado);
@@ -82,20 +106,17 @@ public class PessoaFisica {
         System.out.println("CEP: " + CEP);
     }
 
-    //Getters e Setters
-    public String getEmail() {
-        return Email;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PessoaFisica that = (PessoaFisica) o;
+        return Objects.equals(CPF, that.CPF) &&
+                Objects.equals(Email, that.Email);
     }
 
-    public String getSenha() {
-        return Senha;
-    }
-
-    public boolean ValidarEmail(String Email){
-        if(Email !=  null && Email.toLowerCase().endsWith("@gmail.com")){
-            return true;
-        } else {
-            return false;
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(CPF, Email);
     }
 }

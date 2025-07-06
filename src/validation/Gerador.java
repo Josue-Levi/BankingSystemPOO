@@ -1,21 +1,20 @@
-package validation;
+ package validation;
 
 import java.util.Random;
 
-public class GeradorCC {
+public class Gerador {
     private String numeroConta;
     private final String agencia;
     private final String codigoBanco;
     private final String codigoOperar;
     private static final Random random = new Random();
 
-    public GeradorCC (){
+    public Gerador(){
         this.agencia = "1430";
         this.codigoBanco = "345";
         this.codigoOperar = "001";
-        this.numeroConta = gerarConta();   
+        this.numeroConta = gerarConta();
     }
-
     //Getters
     public String getNumeroConta(){
         return numeroConta;
@@ -40,6 +39,7 @@ public class GeradorCC {
         }
         String numeroContaGerar = contaGerar.toString();
 
+        // O dígito verificador é calculado com base na agência, operação e número da conta
         String digito = agencia + codigoOperar + numeroContaGerar;
 
         int somaDigitos = 0;
