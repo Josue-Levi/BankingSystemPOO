@@ -5,9 +5,9 @@ O SSJ é um simulador de um sistema bancário básico em Java, implementando con
 O foco do projeto é a aplicação e consolidação de conceitos de Programação Orientada a Objetos.
 
 ## Como compilar e rodar:
-2. Certifique-se de ter o Java Development Kit (JDK) 11 ou superior instalado na sua máquina. 
-3. Atente-se à estrutura de pastas. Salve os arquivos em uma mesma pasta e compile-a.
-4. Abra o terminal (ou prompt de comando) na pasta onde estão seus arquivos .java e compile-os:
+1. Certifique-se de ter o Java Development Kit (JDK) 11 ou superior instalado na sua máquina. 
+2. Atente-se à estrutura de pastas. Salve os arquivos em uma mesma pasta e compile-a.
+3. Abra o terminal (ou prompt de comando) na pasta onde estão seus arquivos .java e compile-os:
 ```bash
     javac *.java
 ```
