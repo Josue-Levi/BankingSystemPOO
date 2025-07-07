@@ -46,7 +46,7 @@ O foco do projeto é a aplicação e consolidação de conceitos de Programaçã
 
 ## Estrutura do Projeto
 O código está organizado nos seguintes pacotes:
-
+```
 /
 |___src/
     |---Main.java
@@ -72,6 +72,7 @@ O código está organizado nos seguintes pacotes:
     |   |---ValidadorCNPJ.java
     |   |---ValidadorCPF.java
     |___|---Gerador.java
+```
 
 
 ## Como usar: 
