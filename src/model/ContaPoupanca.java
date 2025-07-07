@@ -45,4 +45,63 @@ public class ContaPoupanca extends Conta {
         System.out.println("Data de Criação: " + this.dataCriacao.format(getFormatter()));
         System.out.printf("Taxa de Rendimento Mensal: %.1f%%\n", TAXA_RENDIMENTO_MENSAL * 100);
     }
+
+    //método de aplicação de rendimento mensal
+    public void aplicarRendimento(){
+
+        LocalDate dataAtualSimulada = LocalDate.now();
+        int mesAtualSimulado = dataAtualSimulada.getMonthValue();
+        int anoAtualSimulado = dataAtualSimulada.getYear();
+        LocalDate ultimoDiaDoMes = dataAtualSimulada.with(TemporalAdjusters.lastDayOfMonth());
+        LocalDate dataParaAplicacaoEsteMes;
+        
+        /**
+         * a lógica exerce uma verificação inical que avalia se o mês ou o ano passou para dar continuidade ao código. Depois, avalia o dia de dataAtualSimulada e compara com a data de aniversário da conta, avaliando dois casos:
+         * 1. Conta criada em um dia inexistente no mês (por exemplo, 30 de fevereiro)
+         * 2. Conta criada em um dia existente no mês
+         */
+        
+        //verifica se o ano passou ou o mês passou
+        if(this.ultimoAnoRendimentoAplicado < anoAtualSimulado || (anoAtualSimulado == this.ultimoAnoRendimentoAplicado && 
+        this.ultimoMesRendimentoAplicado < mesAtualSimulado)){
+            //cria a data de aplicação para esse mês
+            if(this.dataCriacao.getDayOfMonth() > ultimoDiaDoMes.getDayOfMonth()){
+                dataParaAplicacaoEsteMes = dataAtualSimulada.with(TemporalAdjusters.lastDayOfMonth());
+            } else {
+                dataParaAplicacaoEsteMes = LocalDate.of(anoAtualSimulado, mesAtualSimulado, diaAniversarioRendimento);
+            }
+            //registra a última data de aplicação do rendimento
+            LocalDate ultimaDataDeAplicacaoPrevista = LocalDate.of(this.ultimoAnoRendimentoAplicado, this.ultimoMesRendimentoAplicado, this.diaAniversarioRendimento);
+            if (this.diaAniversarioRendimento > ultimaDataDeAplicacaoPrevista.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth()) {
+                ultimaDataDeAplicacaoPrevista = ultimaDataDeAplicacaoPrevista.with(TemporalAdjusters.lastDayOfMonth());
+            }
+            //calcula a diferença de meses entre a data da última aplicação e a data de aplicação para esse mês
+            long quantidadeDeMeses = ChronoUnit.MONTHS.between(ultimaDataDeAplicacaoPrevista, dataParaAplicacaoEsteMes);
+
+            if(quantidadeDeMeses == 1){
+                if(dataAtualSimulada.isAfter(dataParaAplicacaoEsteMes) || dataAtualSimulada.isEqual(dataParaAplicacaoEsteMes)){
+                    System.out.println("===== APLICAÇÃO DO RENDIMENTO MENSAL =====");
+                    double saldoAntesDoRendimento = this.saldo;
+                    this.saldo *= 1 + TAXA_RENDIMENTO_MENSAL;
+                    System.out.printf("Saldo Anterior: R$ %.2f\n", saldoAntesDoRendimento);
+                    System.out.printf("Rendimento Aplicado: R$ %.2f\n", this.saldo - saldoAntesDoRendimento);
+                    System.out.printf("Novo Saldo: R$ %.2f", this.saldo);
+                    this.ultimoMesRendimentoAplicado = mesAtualSimulado;
+                    this.ultimoAnoRendimentoAplicado = anoAtualSimulado;
+                }  
+            } else if (quantidadeDeMeses >= 2){
+                double saldoAntesDoRendimento = this.saldo;
+                this.saldo *= Math.pow(1 + TAXA_RENDIMENTO_MENSAL, quantidadeDeMeses - 1);
+                if(dataAtualSimulada.isAfter(dataParaAplicacaoEsteMes) || dataAtualSimulada.isEqual(dataParaAplicacaoEsteMes)){
+                    System.out.println("===== APLICAÇÃO DO RENDIMENTO MENSAL =====");
+                    this.saldo *= 1 + TAXA_RENDIMENTO_MENSAL;
+                    this.ultimoMesRendimentoAplicado = mesAtualSimulado;
+                    this.ultimoAnoRendimentoAplicado = anoAtualSimulado;
+                }
+                System.out.printf("Saldo Anterior: R$ %.2f\n", saldoAntesDoRendimento);
+                System.out.printf("Rendimento Aplicado: R$ %.2f\n", this.saldo - saldoAntesDoRendimento);
+                System.out.printf("Novo Saldo: R$ %.2f", this.saldo); 
+            }
+        }
+    }
 }

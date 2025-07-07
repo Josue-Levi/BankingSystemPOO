@@ -40,7 +40,6 @@ public class ContaCorrente extends Conta {
         this.limiteChequeEspecial = limiteChequeEspecial;
     }
     
-
     // sobrescrição do metodo de gerar extrato
     @Override
     public void gerarExtrato() {
@@ -66,6 +65,59 @@ public class ContaCorrente extends Conta {
             System.out.printf("Número de Transações Gratuitas restantes neste mês: %d\n", TRANSACOES_GRATUITAS_MES - this.contadorTransacoesMes);
         } else {
             System.out.println("Número de Transações Gratuitas restantes neste mês: 0\n");
+        }
+    }
+
+    public void cobrarTaxaManutencaoMensal(){
+        LocalDate dataAtualSimulada = LocalDate.now();
+        int mesAtualSimulado = dataAtualSimulada.getMonthValue();
+        int anoAtualSimulado = dataAtualSimulada.getYear();
+        LocalDate ultimoDiaDoMes = dataAtualSimulada.with(TemporalAdjusters.lastDayOfMonth());
+        LocalDate dataCobrancaEsteMes;
+
+        if(this.ultimoAnoCobrancaTaxaManutencao < anoAtualSimulado || (anoAtualSimulado == this.ultimoAnoCobrancaTaxaManutencao && this.ultimoMesCobrancaTaxaManutencao < mesAtualSimulado)){
+            //cria a data de cobrança deste mês
+            if(this.dataCriacao.getDayOfMonth() > ultimoDiaDoMes.getDayOfMonth()){
+                dataCobrancaEsteMes = dataAtualSimulada.with(TemporalAdjusters.lastDayOfMonth());
+            } else {
+                dataCobrancaEsteMes = LocalDate.of(anoAtualSimulado, mesAtualSimulado, diaAniversarioCobranca);
+            }
+            
+            //registra a última data de cobrança
+            LocalDate ultimaDataDeCobranca = LocalDate.of(this.ultimoAnoCobrancaTaxaManutencao, this.ultimoMesCobrancaTaxaManutencao, this.diaAniversarioCobranca);
+            if (this.diaAniversarioCobranca > ultimaDataDeCobranca.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth()) {
+                ultimaDataDeCobranca = ultimaDataDeCobranca.with(TemporalAdjusters.lastDayOfMonth());
+            }
+
+            //calcula a diferença de meses entre a data da última aplicação e a data de aplicação para esse mês
+            long quantidadeDeMeses = ChronoUnit.MONTHS.between(ultimaDataDeCobranca, dataCobrancaEsteMes);
+
+            if(quantidadeDeMeses == 1){
+                if(dataAtualSimulada.isAfter(dataCobrancaEsteMes) || dataAtualSimulada.isEqual(dataCobrancaEsteMes)){
+                    System.out.println("===== COBRANÇA DA TAXA DE MANUTENÇÃO MENSAL =====");
+                    double saldoAntesDoRendimento = this.saldo;
+                    this.saldo -= TAXA_MANUTENCAO_MENSAL;
+                    System.out.printf("Saldo Anterior: R$ %.2f\n", saldoAntesDoRendimento);
+                    System.out.printf("Taxa de Manutenção Mensal: R$ %.2f\n", TAXA_MANUTENCAO_MENSAL);
+                    System.out.printf("Novo Saldo: R$ %.2f", this.saldo);
+                    this.ultimoMesCobrancaTaxaManutencao = mesAtualSimulado;
+                    this.ultimoAnoCobrancaTaxaManutencao = anoAtualSimulado;
+                    this.contadorTransacoesMes = 0;
+                } 
+            } else if (quantidadeDeMeses >= 2){
+                double saldoAntesDoRendimento = this.saldo;
+                this.saldo -= TAXA_MANUTENCAO_MENSAL * (quantidadeDeMeses - 1);
+                if(dataAtualSimulada.isAfter(dataCobrancaEsteMes) || dataAtualSimulada.isEqual(dataCobrancaEsteMes)){
+                    System.out.println("===== COBRANÇA DA TAXA DE MANUTENÇÃO MENSAL =====");
+                    this.saldo -= TAXA_MANUTENCAO_MENSAL;
+                    this.ultimoMesCobrancaTaxaManutencao = mesAtualSimulado;
+                    this.ultimoAnoCobrancaTaxaManutencao = anoAtualSimulado;
+                }
+                System.out.printf("Saldo Anterior: R$ %.2f\n", saldoAntesDoRendimento);
+                System.out.printf("Taxa de Manutenção Mensal: R$ %.2f\n", TAXA_MANUTENCAO_MENSAL * quantidadeDeMeses);
+                System.out.printf("Novo Saldo: R$ %.2f", this.saldo);
+                this.contadorTransacoesMes = 0;
+            }
         }
     }
 }

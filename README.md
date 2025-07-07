@@ -44,6 +44,34 @@ O foco do projeto é a aplicação e consolidação de conceitos de Programaçã
 - java.util.ArrayList e java.util.List: Para armazenamento em memória das contas e clientes.
 - Google Gson para manipulação de JSON.
 
+## Estrutura do Projeto
+O código está organizado nos seguintes pacotes:
+
+/
+|___src/
+    |---Main.java
+    |---clients/
+    |   |---CadastroPessoaFisica.java
+    |   |---CadastroPessoaJuridica.java
+    |   |---CadastrosFisica.json
+    |   |---CadastrosJuridico.json
+    |   |---PessoaFisica.java
+    |   |---PessoaJuridica.java
+    |---data/
+    |   |---Contas.json
+    |---model/
+    |   |---Conta.java
+    |   |---ContaCorrente.java
+    |   |---ContaPoupanca.java
+    |---servicos/
+    |   |---Transacao.java
+    |---util/
+    |   |---LocalDateTimeAdapter.java
+    |   |---RuntimeTypeAdapterFactory.java
+    |---valitadion/
+    |   |---ValidadorCNPJ.java
+    |   |---ValidadorCPF.java
+    |___|---Gerador.java
 
 
 ## Como usar: 
