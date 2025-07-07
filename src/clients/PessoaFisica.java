@@ -3,7 +3,7 @@ package clients;
 import java.util.Objects;
 
 public class PessoaFisica {
-    // Este campo será salvo no JSON para identificar o tipo do objeto.
+    // campo utilzado para identificar tipo de chave no Json
     private final String titularType = "PessoaFisica";
 
     // Atributos originais
@@ -109,6 +109,7 @@ public class PessoaFisica {
         System.out.println("CEP: " + CEP);
     }
 
+    // compara para ver se tem outra pessoafisica igual pelo CPF
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -116,7 +117,7 @@ public class PessoaFisica {
         PessoaFisica that = (PessoaFisica) o;
         return Objects.equals(CPF, that.CPF);
     }
-
+     // gera um codigo hash, baseado no CPF
     @Override
     public int hashCode() {
         return Objects.hash(CPF);

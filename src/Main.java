@@ -22,19 +22,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-
+    // metodo global
     private static Scanner scanner = new Scanner(System.in);
-
+    // variaveis global
     private static final String FILE_PF = "src/clients/CadastrosFisica.json";
     private static final String FILE_PJ = "src/clients/CadastrosJuridico.json";
     private static final String FILE_CONTAS = "src/data/contas.json";
 
+    // criação de arrays para armazenamento de dados
     private static List<PessoaFisica> clientesPF = new ArrayList<>();
     private static List<PessoaJuridica> clientesPJ = new ArrayList<>();
     private static List<Conta> contas = new ArrayList<>();
 
     private static Gson gson = criarGson();
 
+    // configura e cria um objeto customizado do Gson para lidar com tipos de dados complexos e herença.
     private static Gson criarGson() {
         RuntimeTypeAdapterFactory<PessoaFisica> titularAdapterFactory = RuntimeTypeAdapterFactory
                 .of(PessoaFisica.class, "titularType")
@@ -54,10 +56,11 @@ public class Main {
                 .create();
     }
 
+    //metodo principal, utilizado para controlar o loop do menu principal.
     public static void main(String[] args) {
         new File("src/clients").mkdirs();
         new File("src/data").mkdirs();
-        carregarDados();
+        carregarDados(); // carrega dados salvos de execuções anteriores.
 
         int opcaoPrincipal;
         do {
@@ -82,28 +85,30 @@ public class Main {
         scanner.close();
     }
 
+    // carrega os dados dos .Json para as listas, e inclui uma logica para migra os dados de formatos antigos.
     private static void carregarDados() {
         System.out.println("Carregando dados existentes...");
         boolean dadosMigrados = false;
 
-        // Carregar Pessoas Físicas com lógica de migração
+        // carregar pessoas físicas com lógica de migração
         dadosMigrados |= carregarClientesPF();
 
-        // Carregar Pessoas Jurídicas com lógica de migração
+        // carregar pessoas jurídicas com lógica de migração
         dadosMigrados |= carregarClientesPJ();
 
-        // Carregar Contas com lógica de migração
+        // carregar Contas com lógica de migração
         dadosMigrados |= carregarContas();
 
         System.out.println("Dados carregados com sucesso.");
 
-        // Se algum dado foi migrado, salva os arquivos no novo formato imediatamente.
+        // se algum dado foi migrado, salva os arquivos no novo formato imediatamente.
         if (dadosMigrados) {
             System.out.println("Migração de dados concluída. Salvando arquivos no novo formato...");
             salvarDados();
         }
     }
 
+    // os 3 metodos abaixo é utilizado para ler os arquivos Json e adiciona o campo tipo para compatibilidade com versõesa antigas,
     private static boolean carregarClientesPF() {
         File file = new File(FILE_PF);
         if (!file.exists() || file.length() == 0) return false;
@@ -128,7 +133,7 @@ public class Main {
         }
         return migrado;
     }
-
+    
     private static boolean carregarClientesPJ() {
         File file = new File(FILE_PJ);
         if (!file.exists() || file.length() == 0) return false;
@@ -186,7 +191,7 @@ public class Main {
         return migrado;
     }
     
-   
+   // metodos para exibir menus na tela do usuario.
     public static void exibirMenuPrincipal() {
         System.out.println("\n===== MENU PRINCIPAL =====");
         System.out.println("[1] Abrir Nova Conta");
@@ -207,6 +212,7 @@ public class Main {
         System.out.println("[2] Pessoa Jurídica");
     }
 
+    // ler o que o usuario inseriu para verificar se foi numero inteiro.
     public static int escolherOpcao() {
         try {
             int opcao = scanner.nextInt();
@@ -219,6 +225,7 @@ public class Main {
         }
     }
 
+    // acopla todo o processo de criação da conta, desde o cadastro até a conta ser criada.
     public static void criarConta() {
         Object titularConta = null;
 
@@ -293,6 +300,7 @@ public class Main {
         }
     }
 
+    // gerencia o processo de login do usuario.
     public static void entrarConta() {
         System.out.println("\n===== ENTRAR EM CONTA EXISTENTE =====");
         System.out.println("===== LOGIN CONTA =====");
@@ -338,6 +346,7 @@ public class Main {
         }
     }
 
+    // verifica os dados de login das listas de pesosas fisicas e juridicas.
     public static Object verificarLogin(String email, String senha) {
         for (PessoaFisica pf : clientesPF) {
             if (pf.getEmail().equalsIgnoreCase(email) && pf.getSenha().equals(senha)) {
@@ -352,6 +361,7 @@ public class Main {
         return null;
     }
 
+    // exibe o menu de operações para uma conta especifica quando o usuario logar.
     public static void menuOperacoes(Conta conta) {
         int opcaoOperacao;
         do {
@@ -417,6 +427,7 @@ public class Main {
         } while (opcaoOperacao != 0);
     }
 
+    // utilizado para salvar os dados nas listas nos arquivos .Json
     private static void salvarDados() {
         System.out.println("Salvando dados...");
         try (FileWriter writer = new FileWriter(FILE_PF)) {

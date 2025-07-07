@@ -7,16 +7,18 @@ import validation.Gerador;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public abstract class Conta {
 
+// classe abstrata que serve como modelo para as classes ContaCorrete.java e ContaPoupança.java
+public abstract class Conta {
+    // realiza a formatação da data
     private transient static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     public static DateTimeFormatter getFormatter() {
         return FORMATTER;
     }
 
+    // atributos protegidos, visivel para as classes filhas.
     protected PessoaFisica titular;
-
     protected String numeroDaConta;
     protected String agencia;
     protected String codigoBanco;
@@ -24,18 +26,20 @@ public abstract class Conta {
     protected double saldo;
     protected LocalDateTime dataCriacao;
 
+    // construtor chamado por classes filhas para criar nova conta.
     public Conta(PessoaFisica titular, double saldoInicial) {
         this.titular = titular;
         this.saldo = saldoInicial;
         this.dataCriacao = LocalDateTime.now();
 
-
+        // utiliza o gerador para definir os dados da conta.
         Gerador gerador = new Gerador();
         this.numeroDaConta = gerador.getNumeroConta();
         this.agencia = gerador.getAgencia();
         this.codigoBanco = gerador.getCodigoBanco();
         this.codigoOperacao = gerador.getCodigoOperar();
 
+        // exibição para o usuario.
         System.out.println("\n===== CONTA CRIADA COM SUCESSO! =====");
         if (titular instanceof PessoaJuridica) {
             System.out.println("Titular (Responsável): " + ((PessoaJuridica) titular).getNomePessoa());
@@ -51,7 +55,7 @@ public abstract class Conta {
         System.out.println("---------------------------------");
     }
 
-    // Getters
+    // Getters são metodos utilizado para obter valores dos atributos
     public PessoaFisica getTitular() {
         return titular;
     }
@@ -80,7 +84,7 @@ public abstract class Conta {
         return codigoOperacao;
     }
 
-    // Setters
+    // Setters são metodos para alterar os valores dos atributos
     public void setTitular(PessoaFisica titular) {
         this.titular = titular;
     }
@@ -89,6 +93,7 @@ public abstract class Conta {
         this.saldo = saldo;
     }
 
+    // adiciona valor ao saldo, caso o valor seja positivo
     public void depositar(double valor) {
         if (valor > 0) {
             LocalDateTime agora = LocalDateTime.now();
@@ -100,7 +105,8 @@ public abstract class Conta {
             System.out.println("Valor de depósito inválido!\n");
         }
     }
-
+    
+    // retira valor do saldo, se caso for um valor valido e caso houver saldo.
     public void sacar(double valor) {
         if (valor > 0 && this.saldo >= valor) {
             LocalDateTime agora = LocalDateTime.now();
@@ -113,5 +119,6 @@ public abstract class Conta {
         }
     }
 
+    // metodo abstrato utilizado nas classes filhas para implementarem a propria logica de gerar extrato.
     public abstract void gerarExtrato();
 }

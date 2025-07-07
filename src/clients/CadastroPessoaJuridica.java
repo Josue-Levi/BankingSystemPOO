@@ -15,6 +15,7 @@ import validation.ValidadorCNPJ;
 public class CadastroPessoaJuridica {
         public static PessoaJuridica CadastrarPessoaJuridica(Scanner scanner) {
                 System.out.println("===== CADASTRO DE PESSOA JURIDICA =====");
+
                 //entrada dos dados pessoais
                 System.out.print("Nome do Responsável: ");
                 String nome = scanner.nextLine();
@@ -36,9 +37,9 @@ public class CadastroPessoaJuridica {
 
                 // entrada dos dados da empresa
                 System.out.println("===== CADASTRO DE INFORMAÇÕES DA EMPRESA =====");
+
                 System.out.print("Razão Social: ");
                 String razaosocial = scanner.nextLine();
-
 
                 String CNPJ;
                 boolean CNPJvalido = false;
@@ -68,18 +69,8 @@ public class CadastroPessoaJuridica {
                 String rua = scanner.nextLine();
 
                 System.out.print("Número: ");
-                int numero = 0;
-                boolean numeroValido = false;
-                while (!numeroValido) {
-                        try {
-                                numero = scanner.nextInt();
-                                scanner.nextLine(); 
-                                numeroValido = true;
-                        } catch (java.util.InputMismatchException e) {
-                                System.out.println("Número inválido. Por favor, digite um número inteiro.");
-                                scanner.nextLine(); 
-                        }
-                }
+                int numero = scanner.nextInt();
+                scanner.nextLine();
 
                 System.out.print("Complemento: ");
                 String complemento = scanner.nextLine();

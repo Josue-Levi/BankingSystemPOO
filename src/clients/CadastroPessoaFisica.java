@@ -15,7 +15,6 @@ import java.util.Scanner;
 
 
 public class CadastroPessoaFisica {
-        // metodo
         public static PessoaFisica CadastrarPessoaFisica(Scanner scanner){
 
                 System.out.println("===== CADASTRO DE PESSOA FÍSICA =====");
@@ -62,18 +61,8 @@ public class CadastroPessoaFisica {
                 String rua = scanner.nextLine();
 
                 System.out.print("Número: ");
-                int numero = 0;
-                boolean numeroValido = false;
-                while (!numeroValido) {
-                        try {
-                                numero = scanner.nextInt();
-                                scanner.nextLine(); 
-                                numeroValido = true;
-                        } catch (java.util.InputMismatchException e) {
-                                System.out.println("Número inválido. Por favor, digite um número inteiro.");
-                                scanner.nextLine();
-                        }
-                }
+                int numero = scanner.nextInt();
+                scanner.nextLine();
 
                 System.out.print("Complemento: ");
                 String complemento = scanner.nextLine();

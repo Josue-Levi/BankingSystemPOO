@@ -9,12 +9,13 @@ import java.time.temporal.TemporalAdjusters;
 
 public class ContaPoupanca extends Conta {
 
+    // atributos
     private final double TAXA_RENDIMENTO_MENSAL = 0.005; // 0.5%
     private int diaAniversarioRendimento;
     private int ultimoMesRendimentoAplicado;
     private int ultimoAnoRendimentoAplicado;
 
-
+    // construtor
     public ContaPoupanca(PessoaFisica titular, double saldoInicial) {
         super(titular, saldoInicial);
         this.diaAniversarioRendimento = this.dataCriacao.getDayOfMonth();
@@ -23,6 +24,7 @@ public class ContaPoupanca extends Conta {
         System.out.println("Tipo de Conta: Poupança");
     }
 
+    // sobrescrição do metodo gerar extrato.
     @Override
     public void gerarExtrato() {
         System.out.println("\n===== EXTRATO CONTA POUPANÇA ===== \n");

@@ -4,16 +4,18 @@ import java.util.Objects;
 
 public class PessoaJuridica extends PessoaFisica {
 
+    // atributos
     protected String CNPJ;
     protected String RazaoSocial;
 
+    // construtor
     public PessoaJuridica(String NomePessoa, String Nascimento, String CPF, String Email, String Senha, String Telefone, String CNPJ, String RazaoSocial) {
         super(NomePessoa, Nascimento, CPF, Email, Senha, Telefone);
         this.CNPJ = CNPJ;
         this.RazaoSocial = RazaoSocial;
     }
 
-    //Getters
+    //getters
     public String getRazaoSocial() {
         return RazaoSocial;
     }
@@ -22,11 +24,13 @@ public class PessoaJuridica extends PessoaFisica {
         return CNPJ;
     }
 
+    // sobrescrição do metodo para o endereço
     @Override
     public void setEndereco(String Estado, String Cidade, String Bairro, String Rua, int Numero, String Complemento, String CEP) {
         super.setEndereco(Estado, Cidade, Bairro, Rua, Numero, Complemento, CEP);
     }
 
+    // metodo para exibir os dados ao usuario
     public void ExibirDadosPessoaJuridica() {
         System.out.println("\nDADOS CADASTRADOS:");
         System.out.println("===== INFORMAÇÕES PESSOAIS (RESPONSÁVEL) =====");
@@ -48,6 +52,7 @@ public class PessoaJuridica extends PessoaFisica {
         System.out.println("CEP: " + CEP);
     }
 
+    // compara para ver se tem outra pessoajuridica igual pelo CNPJ
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,6 +61,7 @@ public class PessoaJuridica extends PessoaFisica {
         return Objects.equals(CNPJ, that.CNPJ);
     }
 
+    // gera um codigo hash, baseado no CNPJ
     @Override
     public int hashCode() {
         return Objects.hash(CNPJ);

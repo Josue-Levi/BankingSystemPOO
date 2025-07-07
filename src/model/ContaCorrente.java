@@ -9,16 +9,18 @@ import java.time.temporal.TemporalAdjusters;
 
 public class ContaCorrente extends Conta {
 
+    // atributos 
     private final double TAXA_MANUTENCAO_MENSAL = 10.00;
     private final double TAXA_POR_TRANSACAO_EXTRA = 2.50;
     private final int TRANSACOES_GRATUITAS_MES = 20;
-
     private double limiteChequeEspecial;
     private int contadorTransacoesMes = 0;
+    // variaveis para controlar a cobrança da taxa de manutenção
     private int ultimoMesCobrancaTaxaManutencao;
     private int ultimoAnoCobrancaTaxaManutencao;
     private int diaAniversarioCobranca;
 
+    // construtor
     public ContaCorrente(PessoaFisica titular, double saldoInicial, double limiteChequeEspecial) {
         super(titular, saldoInicial);
         this.limiteChequeEspecial = limiteChequeEspecial;
@@ -29,7 +31,7 @@ public class ContaCorrente extends Conta {
         System.out.printf("Limite de Cheque Especial: R$ %.2f\n", this.limiteChequeEspecial);
     }
     
-
+    // getters para acessar aos atributos
     public double getLimiteChequeEspecial() {
         return limiteChequeEspecial;
     }
@@ -39,6 +41,7 @@ public class ContaCorrente extends Conta {
     }
     
 
+    // sobrescrição do metodo de gerar extrato
     @Override
     public void gerarExtrato() {
         System.out.println("\n===== EXTRATO CONTA CORRENTE ===== \n");

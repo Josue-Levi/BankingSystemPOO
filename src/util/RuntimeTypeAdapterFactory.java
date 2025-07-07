@@ -10,14 +10,17 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+//
 
 public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
     
+    // atributos
     private final Class<?> baseType;
     private final String typeFieldName;
     private final Map<String, Class<?>> labelToSubtype = new LinkedHashMap<>();
     private final Map<Class<?>, String> subtypeToLabel = new LinkedHashMap<>();
 
+    // construtor
     private RuntimeTypeAdapterFactory(Class<?> baseType, String typeFieldName) {
         if (typeFieldName == null || baseType == null) {
             throw new NullPointerException();
@@ -26,14 +29,17 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
         this.typeFieldName = typeFieldName;
     }
 
+    // criando a fabrica de adptadores
     public static <T> RuntimeTypeAdapterFactory<T> of(Class<T> baseType, String typeFieldName) {
         return new RuntimeTypeAdapterFactory<>(baseType, typeFieldName);
     }
 
+    // cria a fabrica usando "type" como o nome padrão para o campo de tipo
     public static <T> RuntimeTypeAdapterFactory<T> of(Class<T> baseType) {
         return new RuntimeTypeAdapterFactory<>(baseType, "type");
     }
 
+    // registra uma subclasse, associando  a uma etiqueta de texto unico
     public RuntimeTypeAdapterFactory<T> registerSubtype(Class<? extends T> type, String label) {
         if (type == null || label == null) {
             throw new NullPointerException();
@@ -46,10 +52,12 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
         return this;
     }
 
+    // registra uma subclasse usando o nome simples da propria classe como etiqueta
     public RuntimeTypeAdapterFactory<T> registerSubtype(Class<? extends T> type) {
         return registerSubtype(type, type.getSimpleName());
     }
 
+    //  metodo principal que o Gson chama para criar o adaptador
     @Override
     public <R> TypeAdapter<R> create(Gson gson, TypeToken<R> type) {
         if (!baseType.isAssignableFrom(type.getRawType())) {
@@ -66,6 +74,8 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
         }
 
         return new TypeAdapter<R>() {
+
+            // escreve o objeto em Java em formato Json, adicionando o campo de tipo;
             @Override
             public void write(JsonWriter out, R value) throws IOException {
                 Class<?> srcType = value.getClass();
@@ -81,6 +91,7 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
                 Streams.write(clone, out);
             }
 
+            // realiza a leitura do Json e converte para objeto Java
             @Override
             public R read(JsonReader in) throws IOException {
                 JsonElement jsonElement = Streams.parse(in);
