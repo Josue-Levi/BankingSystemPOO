@@ -45,7 +45,7 @@ public class CadastroPessoaJuridica {
                 do {
                         System.out.print("Digite o CNPJ (apenas números): ");
                         CNPJ = scanner.nextLine();
-                        CNPJvalido = ValidadorCNPJ.validarCNPJ(CNPJ); // O método já imprime a mensagem
+                        CNPJvalido = ValidadorCNPJ.validarCNPJ(CNPJ);
                 } while (!CNPJvalido);
 
 
@@ -73,11 +73,11 @@ public class CadastroPessoaJuridica {
                 while (!numeroValido) {
                         try {
                                 numero = scanner.nextInt();
-                                scanner.nextLine(); // Consumir a nova linha
+                                scanner.nextLine(); 
                                 numeroValido = true;
                         } catch (java.util.InputMismatchException e) {
                                 System.out.println("Número inválido. Por favor, digite um número inteiro.");
-                                scanner.nextLine(); // Consumir a entrada inválida
+                                scanner.nextLine(); 
                         }
                 }
 

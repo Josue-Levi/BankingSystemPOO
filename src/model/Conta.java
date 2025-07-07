@@ -1,32 +1,30 @@
 package model;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import clients.PessoaFisica;
 import clients.PessoaJuridica;
 import validation.Gerador;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public abstract class Conta {
 
-    //Formatador de Data
-    // Tornar TRANSIENT para Gson não tentar serializar o formatador diretamente
     private transient static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     public static DateTimeFormatter getFormatter() {
         return FORMATTER;
     }
 
-    //Atributos
+    protected PessoaFisica titular;
+
     protected String numeroDaConta;
     protected String agencia;
     protected String codigoBanco;
     protected String codigoOperacao;
-    protected Object titular; // Cuidado com Object para Gson. Funciona com RuntimeTypeAdapterFactory
     protected double saldo;
     protected LocalDateTime dataCriacao;
 
-    // Construtores
-    public Conta(Object titular, double saldoInicial) {
+    public Conta(PessoaFisica titular, double saldoInicial) {
         this.titular = titular;
         this.saldo = saldoInicial;
         this.dataCriacao = LocalDateTime.now();
@@ -39,11 +37,11 @@ public abstract class Conta {
         this.codigoOperacao = gerador.getCodigoOperar();
 
         System.out.println("\n===== CONTA CRIADA COM SUCESSO! =====");
-        if (titular instanceof PessoaFisica) {
-            System.out.println("Titular: " + ((PessoaFisica) titular).getNomePessoa());
-        } else if (titular instanceof PessoaJuridica) {
+        if (titular instanceof PessoaJuridica) {
             System.out.println("Titular (Responsável): " + ((PessoaJuridica) titular).getNomePessoa());
             System.out.println("Razão Social: " + ((PessoaJuridica) titular).getRazaoSocial());
+        } else if (titular instanceof PessoaFisica) {
+            System.out.println("Titular: " + titular.getNomePessoa());
         }
         System.out.println("Número da Conta: " + this.numeroDaConta);
         System.out.println("Agência: " + this.agencia);
@@ -54,7 +52,7 @@ public abstract class Conta {
     }
 
     // Getters
-    public Object getTitular(){
+    public PessoaFisica getTitular() {
         return titular;
     }
 
@@ -62,11 +60,11 @@ public abstract class Conta {
         return dataCriacao;
     }
 
-    public String getNumeroDaConta(){
+    public String getNumeroDaConta() {
         return numeroDaConta;
     }
 
-    public double getSaldo(){
+    public double getSaldo() {
         return saldo;
     }
 
@@ -82,24 +80,17 @@ public abstract class Conta {
         return codigoOperacao;
     }
 
-    // Setters (considerar se todos são realmente necessários)
-    // Para Gson, setters são úteis, mas alguns atributos (como número da conta)
-    // normalmente não seriam alterados após a criação.
-    public void setNumeroDaConta(String numeroDaConta){
-        this.numeroDaConta = numeroDaConta;
-    }
-
-    public void setTitular(Object titular){ // Mudado para Object para consistência
+    // Setters
+    public void setTitular(PessoaFisica titular) {
         this.titular = titular;
     }
 
-    public void setSaldo(double saldo){
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
-    // Método de Depósito
-    public void depositar(double valor){
-        if(valor > 0){
+    public void depositar(double valor) {
+        if (valor > 0) {
             LocalDateTime agora = LocalDateTime.now();
             String dataHoraFormatada = agora.format(FORMATTER);
             this.saldo += valor;
@@ -110,20 +101,17 @@ public abstract class Conta {
         }
     }
 
-    // Método de Saque
-    public void sacar(double valor){
-        if(valor > 0 && this.saldo >= valor){
+    public void sacar(double valor) {
+        if (valor > 0 && this.saldo >= valor) {
             LocalDateTime agora = LocalDateTime.now();
             String dataHoraFormatada = agora.format(FORMATTER);
             this.saldo -= valor;
             System.out.printf("Saque de R$ %.2f realizado. Novo saldo: R$ %.2f.\n", valor, this.saldo);
             System.out.printf("Data e hora do saque: %s.\n", dataHoraFormatada);
         } else {
-            System.out.println("Valor de saque inválido ou saldo insuficiente!\n"); // Adicionado saldo insuficiente
+            System.out.println("Valor de saque inválido ou saldo insuficiente!\n");
         }
     }
 
-    // Método Abstrato de Extrato
     public abstract void gerarExtrato();
-
 }

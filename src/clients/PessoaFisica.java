@@ -3,7 +3,10 @@ package clients;
 import java.util.Objects;
 
 public class PessoaFisica {
-    // atributos
+    // Este campo será salvo no JSON para identificar o tipo do objeto.
+    private final String titularType = "PessoaFisica";
+
+    // Atributos originais
     protected String CPF;
     protected String Nascimento;
     protected String NomePessoa;
@@ -18,7 +21,7 @@ public class PessoaFisica {
     protected String CEP;
     protected String Senha;
 
-    // construtores;
+    // Construtores
     public PessoaFisica(String NomePessoa, String Nascimento, String CPF, String Email, String Senha, String Telefone){
         this.CPF = CPF;
         this.Nascimento = Nascimento;
@@ -87,7 +90,7 @@ public class PessoaFisica {
         return CEP;
     }
 
-    // metodos
+    // Métodos
     public void ExibirDadosPessoaFisica(){
         System.out.println("\nDADOS CADASTRADOS:");
         System.out.println("===== INFORMAÇÕES PESSOAIS =====");
@@ -95,7 +98,7 @@ public class PessoaFisica {
         System.out.println("CPF: " + CPF);
         System.out.println("Data de Nascimento: " + Nascimento);
         System.out.println("Email: " + Email);
-        System.out.println("Senha: " + Senha); // Em um sistema real, a senha não seria exibida
+        System.out.println("Senha: " + Senha);
         System.out.println("Telefone: " + Telefone);
         System.out.println("===== INFORMAÇÕES RESIDENCIAL =====");
         System.out.println("Estado: " + Estado);
@@ -111,12 +114,11 @@ public class PessoaFisica {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PessoaFisica that = (PessoaFisica) o;
-        return Objects.equals(CPF, that.CPF) &&
-                Objects.equals(Email, that.Email);
+        return Objects.equals(CPF, that.CPF);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(CPF, Email);
+        return Objects.hash(CPF);
     }
 }

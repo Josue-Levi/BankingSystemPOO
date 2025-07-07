@@ -14,8 +14,6 @@ import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeAdapter implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
 
-    // Use o mesmo formatador da sua classe Conta
-    // Não precisa ser 'transient' aqui, pois o Gson não serializará este adaptador.
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     @Override

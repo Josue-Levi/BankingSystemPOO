@@ -2,61 +2,62 @@ import clients.CadastroPessoaFisica;
 import clients.CadastroPessoaJuridica;
 import clients.PessoaFisica;
 import clients.PessoaJuridica;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import model.Conta;
 import model.ContaCorrente;
 import model.ContaPoupanca;
-import util.*;
-import java.time.LocalDateTime;
+import services.Transacao;
+import util.LocalDateTimeAdapter;
+import util.RuntimeTypeAdapterFactory;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.*;
-
-import services.Transacao;
 
 public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    // Caminhos dos arquivos JSON para persistência
     private static final String FILE_PF = "src/clients/CadastrosFisica.json";
     private static final String FILE_PJ = "src/clients/CadastrosJuridico.json";
     private static final String FILE_CONTAS = "src/data/contas.json";
 
-    // Listas em memória
     private static List<PessoaFisica> clientesPF = new ArrayList<>();
     private static List<PessoaJuridica> clientesPJ = new ArrayList<>();
     private static List<Conta> contas = new ArrayList<>();
 
-    // Configuração do Gson para lidar com herança na classe Conta
-    private static Gson gson = new GsonBuilder()
-        .setPrettyPrinting()
-        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-        .registerTypeAdapterFactory(
-            RuntimeTypeAdapterFactory.of(Conta.class, "tipoConta")
-                .registerSubtype(ContaCorrente.class, "ContaCorrente")
-                .registerSubtype(ContaPoupanca.class, "ContaPoupanca")
-        )
-        .create();
+    private static Gson gson = criarGson();
 
-    public static void main(String[] args){
-        // Garante que os diretórios existam
+    private static Gson criarGson() {
+        RuntimeTypeAdapterFactory<PessoaFisica> titularAdapterFactory = RuntimeTypeAdapterFactory
+                .of(PessoaFisica.class, "titularType")
+                .registerSubtype(PessoaFisica.class, "PessoaFisica")
+                .registerSubtype(PessoaJuridica.class, "PessoaJuridica");
+
+        RuntimeTypeAdapterFactory<Conta> contaAdapterFactory = RuntimeTypeAdapterFactory
+                .of(Conta.class, "tipoConta")
+                .registerSubtype(ContaCorrente.class, "ContaCorrente")
+                .registerSubtype(ContaPoupanca.class, "ContaPoupanca");
+
+        return new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapterFactory(contaAdapterFactory)
+                .registerTypeAdapterFactory(titularAdapterFactory)
+                .create();
+    }
+
+    public static void main(String[] args) {
         new File("src/clients").mkdirs();
         new File("src/data").mkdirs();
-
-        carregarDados(); // Carrega os dados no início do programa
+        carregarDados();
 
         int opcaoPrincipal;
         do {
@@ -71,16 +72,121 @@ public class Main {
                     break;
                 case 0:
                     System.out.println("Saindo do simulador... Adeus.");
-                    salvarDados(); // Salva os dados antes de sair
+                    salvarDados();
                     break;
                 default:
                     System.out.println("Opção inválida. Digite uma das opções listadas.");
                     break;
             }
-        } while(opcaoPrincipal != 0);
+        } while (opcaoPrincipal != 0);
         scanner.close();
     }
 
+    private static void carregarDados() {
+        System.out.println("Carregando dados existentes...");
+        boolean dadosMigrados = false;
+
+        // Carregar Pessoas Físicas com lógica de migração
+        dadosMigrados |= carregarClientesPF();
+
+        // Carregar Pessoas Jurídicas com lógica de migração
+        dadosMigrados |= carregarClientesPJ();
+
+        // Carregar Contas com lógica de migração
+        dadosMigrados |= carregarContas();
+
+        System.out.println("Dados carregados com sucesso.");
+
+        // Se algum dado foi migrado, salva os arquivos no novo formato imediatamente.
+        if (dadosMigrados) {
+            System.out.println("Migração de dados concluída. Salvando arquivos no novo formato...");
+            salvarDados();
+        }
+    }
+
+    private static boolean carregarClientesPF() {
+        File file = new File(FILE_PF);
+        if (!file.exists() || file.length() == 0) return false;
+
+        boolean migrado = false;
+        try (FileReader reader = new FileReader(file)) {
+            JsonElement element = JsonParser.parseReader(reader);
+            if (element.isJsonArray()) {
+                for (JsonElement item : element.getAsJsonArray()) {
+                    JsonObject obj = item.getAsJsonObject();
+                    if (!obj.has("titularType")) {
+                        obj.addProperty("titularType", "PessoaFisica");
+                        migrado = true;
+                    }
+                }
+            }
+            clientesPF = gson.fromJson(element, new TypeToken<List<PessoaFisica>>() {}.getType());
+            if (clientesPF == null) clientesPF = new ArrayList<>();
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar ou migrar clientes PF: " + e.getMessage());
+            clientesPF = new ArrayList<>();
+        }
+        return migrado;
+    }
+
+    private static boolean carregarClientesPJ() {
+        File file = new File(FILE_PJ);
+        if (!file.exists() || file.length() == 0) return false;
+
+        boolean migrado = false;
+        try (FileReader reader = new FileReader(file)) {
+            JsonElement element = JsonParser.parseReader(reader);
+            if (element.isJsonArray()) {
+                for (JsonElement item : element.getAsJsonArray()) {
+                    JsonObject obj = item.getAsJsonObject();
+                    if (!obj.has("titularType")) {
+                        obj.addProperty("titularType", "PessoaJuridica");
+                        migrado = true;
+                    }
+                }
+            }
+            clientesPJ = gson.fromJson(element, new TypeToken<List<PessoaJuridica>>() {}.getType());
+            if (clientesPJ == null) clientesPJ = new ArrayList<>();
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar ou migrar clientes PJ: " + e.getMessage());
+            clientesPJ = new ArrayList<>();
+        }
+        return migrado;
+    }
+
+    private static boolean carregarContas() {
+        File file = new File(FILE_CONTAS);
+        if (!file.exists() || file.length() == 0) return false;
+
+        boolean migrado = false;
+        try (FileReader reader = new FileReader(file)) {
+            JsonElement element = JsonParser.parseReader(reader);
+            if (element.isJsonArray()) {
+                for (JsonElement item : element.getAsJsonArray()) {
+                    JsonObject contaObj = item.getAsJsonObject();
+                    if (contaObj.has("titular") && contaObj.get("titular").isJsonObject()) {
+                        JsonObject titularObj = contaObj.getAsJsonObject("titular");
+                        if (!titularObj.has("titularType")) {
+                            migrado = true;
+                            if (titularObj.has("CNPJ")) {
+                                titularObj.addProperty("titularType", "PessoaJuridica");
+                            } else {
+                                titularObj.addProperty("titularType", "PessoaFisica");
+                            }
+                        }
+                    }
+                }
+            }
+            contas = gson.fromJson(element, new TypeToken<List<Conta>>() {}.getType());
+            if (contas == null) contas = new ArrayList<>();
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar ou migrar contas: " + e.getMessage());
+            contas = new ArrayList<>();
+        }
+        return migrado;
+    }
+    
+   
     public static void exibirMenuPrincipal() {
         System.out.println("\n===== MENU PRINCIPAL =====");
         System.out.println("[1] Abrir Nova Conta");
@@ -89,33 +195,31 @@ public class Main {
         System.out.print("Escolha uma opção: ");
     }
 
-    public static void exibirTiposDeConta(){
+    public static void exibirTiposDeConta() {
         System.out.println("\n===== TIPOS DE CONTA =====");
         System.out.println("[1] Conta Corrente");
         System.out.println("[2] Conta Poupança");
     }
 
-    public static void exibirTipoDeCliente(){
+    public static void exibirTipoDeCliente() {
         System.out.println("\n===== TIPOS DE CLIENTE =====");
         System.out.println("[1] Pessoa Física");
         System.out.println("[2] Pessoa Jurídica");
     }
 
-    public static int escolherOpcao(){
+    public static int escolherOpcao() {
         try {
             int opcao = scanner.nextInt();
-            scanner.nextLine(); // Consumir a nova linha
+            scanner.nextLine();
             return opcao;
-        } catch (InputMismatchException exception){
+        } catch (InputMismatchException exception) {
             System.out.println("Entrada inválida. Por favor, digite um número.\n");
-            scanner.nextLine(); // Consumir a entrada inválida para evitar loop
-            return -1; // Retorna um valor inválido para continuar o loop
+            scanner.nextLine();
+            return -1;
         }
     }
 
-    public static void criarConta(){
-        PessoaFisica pessoaFisica = null;
-        PessoaJuridica pessoaJuridica = null;
+    public static void criarConta() {
         Object titularConta = null;
 
         exibirTipoDeCliente();
@@ -123,18 +227,18 @@ public class Main {
 
         switch (tipoCliente) {
             case 1:
-                pessoaFisica = CadastroPessoaFisica.CadastrarPessoaFisica(scanner);
-                if (pessoaFisica != null){
-                    if(!clientesPF.contains(pessoaFisica)){
+                PessoaFisica pessoaFisica = CadastroPessoaFisica.CadastrarPessoaFisica(scanner);
+                if (pessoaFisica != null) {
+                    if (clientesPF.stream().noneMatch(p -> p.equals(pessoaFisica))) {
                         clientesPF.add(pessoaFisica);
                     }
                     titularConta = pessoaFisica;
                 }
                 break;
             case 2:
-                pessoaJuridica = CadastroPessoaJuridica.CadastrarPessoaJuridica(scanner);
-                if (pessoaJuridica != null){
-                    if(!clientesPJ.contains(pessoaJuridica)){
+                PessoaJuridica pessoaJuridica = CadastroPessoaJuridica.CadastrarPessoaJuridica(scanner);
+                if (pessoaJuridica != null) {
+                     if (clientesPJ.stream().noneMatch(p -> p.equals(pessoaJuridica))) {
                         clientesPJ.add(pessoaJuridica);
                     }
                     titularConta = pessoaJuridica;
@@ -145,17 +249,16 @@ public class Main {
                 return;
         }
 
-        if (titularConta != null){
+        if (titularConta != null) {
             exibirTiposDeConta();
             int tipoConta = escolherOpcao();
-
             Conta novaConta = null;
 
             switch (tipoConta) {
                 case 1:
                     double limiteChequeEspecial = 0.0;
                     boolean limiteValido = false;
-                    while(!limiteValido) {
+                    while (!limiteValido) {
                         System.out.print("Digite o limite do cheque especial: R$ ");
                         try {
                             limiteChequeEspecial = scanner.nextDouble();
@@ -170,26 +273,17 @@ public class Main {
                             scanner.nextLine();
                         }
                     }
-
-                    if (titularConta instanceof PessoaFisica){
-                        novaConta = new ContaCorrente((PessoaFisica) titularConta , 0.0, limiteChequeEspecial);
-                    } else if (titularConta instanceof PessoaJuridica){
-                        novaConta = new ContaCorrente((PessoaJuridica) titularConta, 0.0, limiteChequeEspecial);
-                    }
+                    novaConta = new ContaCorrente((PessoaFisica) titularConta, 0.0, limiteChequeEspecial);
                     break;
                 case 2:
-                    if (titularConta instanceof PessoaFisica) {
-                        novaConta = new ContaPoupanca((PessoaFisica) titularConta, 0.0);
-                    } else if (titularConta instanceof PessoaJuridica) {
-                        novaConta = new ContaPoupanca((PessoaJuridica) titularConta, 0.0);
-                    }
+                    novaConta = new ContaPoupanca((PessoaFisica) titularConta, 0.0);
                     break;
                 default:
                     System.out.println("Opção inválida para tipo de conta. Operação cancelada.\n");
                     return;
             }
 
-            if (novaConta != null){
+            if (novaConta != null) {
                 contas.add(novaConta);
                 novaConta.gerarExtrato();
                 salvarDados();
@@ -199,23 +293,21 @@ public class Main {
         }
     }
 
-    public static void entrarConta(){
+    public static void entrarConta() {
         System.out.println("\n===== ENTRAR EM CONTA EXISTENTE =====");
         System.out.println("===== LOGIN CONTA =====");
         System.out.print("Email: ");
         String email = scanner.nextLine();
-
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
 
         Object clienteLogado = verificarLogin(email, senha);
 
-        if(clienteLogado != null) {
+        if (clienteLogado != null) {
             System.out.println("Login bem-sucedido!");
-
             List<Conta> contasDoCliente = new ArrayList<>();
             for (Conta conta : contas) {
-                if (conta.getTitular().equals(clienteLogado)) {
+                if (conta.getTitular() != null && conta.getTitular().equals(clienteLogado)) {
                     contasDoCliente.add(conta);
                 }
             }
@@ -241,54 +333,26 @@ public class Main {
             } else {
                 System.out.println("Seleção de conta inválida.");
             }
-
         } else {
             System.out.println("Email ou senha inválidos. Tente novamente.");
         }
     }
 
     public static Object verificarLogin(String email, String senha) {
-        File fileFisica = new File(FILE_PF);
-        if (fileFisica.exists() && fileFisica.length() > 0) {
-            try (FileReader readerFisica = new FileReader(FILE_PF)) {
-                List<PessoaFisica> pessoasFisicas = gson.fromJson(readerFisica, new TypeToken<List<PessoaFisica>>() {}.getType());
-                if (pessoasFisicas != null) {
-                    for (PessoaFisica pf : pessoasFisicas) {
-                        if (pf.getEmail().equals(email) && pf.getSenha().equals(senha)) {
-                            if (!clientesPF.contains(pf)) {
-                                clientesPF.add(pf);
-                            }
-                            return pf;
-                        }
-                    }
-                }
-            } catch (IOException | JsonSyntaxException e) {
-                System.err.println("Erro ao carregar cadastros de Pessoa Física para login: " + e.getMessage());
+        for (PessoaFisica pf : clientesPF) {
+            if (pf.getEmail().equalsIgnoreCase(email) && pf.getSenha().equals(senha)) {
+                return pf;
             }
         }
-
-        File fileJuridica = new File(FILE_PJ);
-        if (fileJuridica.exists() && fileJuridica.length() > 0) {
-            try (FileReader readerJuridica = new FileReader(FILE_PJ)) {
-                List<PessoaJuridica> pessoasJuridicas = gson.fromJson(readerJuridica, new TypeToken<List<PessoaJuridica>>() {}.getType());
-                if (pessoasJuridicas != null) {
-                    for (PessoaJuridica pj : pessoasJuridicas) {
-                        if (pj.getEmail().equals(email) && pj.getSenha().equals(senha)) {
-                            if (!clientesPJ.contains(pj)) {
-                                clientesPJ.add(pj);
-                            }
-                            return pj;
-                        }
-                    }
-                }
-            } catch (IOException | JsonSyntaxException e) {
-                System.err.println("Erro ao carregar cadastros de Pessoa Jurídica para login: " + e.getMessage());
+        for (PessoaJuridica pj : clientesPJ) {
+            if (pj.getEmail().equalsIgnoreCase(email) && pj.getSenha().equals(senha)) {
+                return pj;
             }
         }
         return null;
     }
 
-    public static void menuOperacoes (Conta conta){
+    public static void menuOperacoes(Conta conta) {
         int opcaoOperacao;
         do {
             System.out.println("\n===== OPERAÇÕES DA CONTA " + conta.getNumeroDaConta() + " =====");
@@ -303,61 +367,46 @@ public class Main {
 
             switch (opcaoOperacao) {
                 case 1:
-                    double valorDeposito = 0.0;
-                    boolean depositoValido = false;
-                    while (!depositoValido) {
-                        System.out.print("Digite o valor do depósito: R$ ");
-                        try {
-                            valorDeposito = scanner.nextDouble();
-                            scanner.nextLine();
-                            if (valorDeposito <= 0) {
-                                System.out.println("O valor do depósito deve ser positivo.");
-                            } else {
-                                depositoValido = true;
-                            }
-                        } catch (InputMismatchException e) {
-                            System.out.println("Valor inválido. Por favor, digite um número.");
-                            scanner.nextLine();
-                        }
+                    System.out.print("Digite o valor do depósito: R$ ");
+                    try {
+                        double valorDeposito = scanner.nextDouble();
+                        scanner.nextLine();
+                        conta.depositar(valorDeposito);
+                        salvarDados();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Valor inválido. Por favor, digite um número.");
+                        scanner.nextLine();
                     }
-                    conta.depositar(valorDeposito);
-                    salvarDados();
                     break;
                 case 2:
-                    double valorSaque = 0.0;
-                    boolean saqueValido = false;
-                    while (!saqueValido) {
-                        System.out.print("Digite o valor do saque: R$ ");
-                        try {
-                            valorSaque = scanner.nextDouble();
-                            scanner.nextLine();
-                            if (valorSaque <= 0) {
-                                System.out.println("O valor do saque deve ser positivo.");
-                            } else {
-                                saqueValido = true;
-                            }
-                        } catch (InputMismatchException e) {
-                            System.out.println("Valor inválido. Por favor, digite um número.");
-                            scanner.nextLine();
-                        }
+                    System.out.print("Digite o valor do saque: R$ ");
+                     try {
+                        double valorSaque = scanner.nextDouble();
+                        scanner.nextLine();
+                        conta.sacar(valorSaque);
+                        salvarDados();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Valor inválido. Por favor, digite um número.");
+                        scanner.nextLine();
                     }
-                    conta.sacar(valorSaque);
-                    salvarDados();
                     break;
                 case 3:
                     conta.gerarExtrato();
                     break;
                 case 4:
-                System.out.print("Digite o número da conta de destino: ");
-                String contaDestino = scanner.nextLine();
-                System.out.print("Digite o valor para transferir: R$ ");
-                double valorTransferencia = scanner.nextDouble();
-                scanner.nextLine(); // limpar buffer
-
-                boolean sucesso = Transacao.transferir(contas, conta.getNumeroDaConta(), contaDestino, valorTransferencia);
-                if (sucesso) salvarDados();
-                break;
-
+                    System.out.print("Digite o número da conta de destino: ");
+                    String contaDestino = scanner.nextLine();
+                    System.out.print("Digite o valor para transferir: R$ ");
+                    try {
+                        double valorTransferencia = scanner.nextDouble();
+                        scanner.nextLine();
+                        boolean sucesso = Transacao.transferir(contas, conta.getNumeroDaConta(), contaDestino, valorTransferencia);
+                        if (sucesso) salvarDados();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Valor inválido. Por favor, digite um número.");
+                        scanner.nextLine();
+                    }
+                    break;
                 case 0:
                     System.out.println("Voltando ao Menu Principal...");
                     break;
@@ -368,70 +417,6 @@ public class Main {
         } while (opcaoOperacao != 0);
     }
 
-    private static void carregarDados() {
-        System.out.println("Carregando dados existentes...");
-        File filePf = new File(FILE_PF);
-        if (filePf.exists() && filePf.length() > 0) {
-            try (FileReader reader = new FileReader(FILE_PF)) {
-                clientesPF = gson.fromJson(reader, new TypeToken<List<PessoaFisica>>() {}.getType());
-                if (clientesPF == null) clientesPF = new ArrayList<>();
-            } catch (IOException | JsonSyntaxException e) {
-                System.err.println("Erro ao carregar clientes PF: " + e.getMessage());
-                clientesPF = new ArrayList<>();
-            }
-        } else {
-            System.out.println("Arquivo de clientes PF não encontrado ou vazio.");
-        }
-
-        File filePj = new File(FILE_PJ);
-        if (filePj.exists() && filePj.length() > 0) {
-            try (FileReader reader = new FileReader(FILE_PJ)) {
-                clientesPJ = gson.fromJson(reader, new TypeToken<List<PessoaJuridica>>() {}.getType());
-                if (clientesPJ == null) clientesPJ = new ArrayList<>();
-            } catch (IOException | JsonSyntaxException e) {
-                System.err.println("Erro ao carregar clientes PJ: " + e.getMessage());
-                clientesPJ = new ArrayList<>();
-            }
-        } else {
-            System.out.println("Arquivo de clientes PJ não encontrado ou vazio.");
-        }
-
-        File fileContas = new File(FILE_CONTAS);
-        if (fileContas.exists() && fileContas.length() > 0) {
-            try (FileReader reader = new FileReader(FILE_CONTAS)) {
-                contas = gson.fromJson(reader, new TypeToken<List<Conta>>() {}.getType());
-                if (contas == null) contas = new ArrayList<>();
-
-                for (Conta conta : contas) {
-                    if (conta.getTitular() instanceof PessoaFisica) {
-                        PessoaFisica titularCarregado = (PessoaFisica) conta.getTitular();
-                        for (PessoaFisica pf : clientesPF) {
-                            if (pf.equals(titularCarregado)) {
-                                conta.setTitular(pf);
-                                break;
-                            }
-                        }
-                    } else if (conta.getTitular() instanceof PessoaJuridica) {
-                        PessoaJuridica titularCarregado = (PessoaJuridica) conta.getTitular();
-                        for (PessoaJuridica pj : clientesPJ) {
-                            if (pj.equals(titularCarregado)) {
-                                conta.setTitular(pj);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-            } catch (IOException | JsonSyntaxException e) {
-                System.err.println("Erro ao carregar contas: " + e.getMessage());
-                contas = new ArrayList<>();
-            }
-        } else {
-            System.out.println("Arquivo de contas não encontrado ou vazio.");
-        }
-        System.out.println("Dados carregados com sucesso (ou arquivos criados/ignorados se vazios/corrompidos).");
-    }
-
     private static void salvarDados() {
         System.out.println("Salvando dados...");
         try (FileWriter writer = new FileWriter(FILE_PF)) {
@@ -439,13 +424,11 @@ public class Main {
         } catch (IOException e) {
             System.err.println("Erro ao salvar clientes PF: " + e.getMessage());
         }
-
         try (FileWriter writer = new FileWriter(FILE_PJ)) {
             gson.toJson(clientesPJ, writer);
         } catch (IOException e) {
             System.err.println("Erro ao salvar clientes PJ: " + e.getMessage());
         }
-
         try (FileWriter writer = new FileWriter(FILE_CONTAS)) {
             gson.toJson(contas, writer);
         } catch (IOException e) {

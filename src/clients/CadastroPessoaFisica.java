@@ -2,13 +2,13 @@ package clients;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken; // Importar para Type
+import com.google.gson.reflect.TypeToken; 
 import validation.ValidadorCPF;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type; // Importar para Type
+import java.lang.reflect.Type; 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -31,7 +31,7 @@ public class CadastroPessoaFisica {
                 do {
                         System.out.print("CPF (apenas números): ");
                         CPF = scanner.nextLine();
-                        CPFvalido = ValidadorCPF.validarCPF(CPF); // O método já imprime a mensagem
+                        CPFvalido = ValidadorCPF.validarCPF(CPF);
                 } while (!CPFvalido);
 
                 System.out.print("Email: ");
@@ -67,11 +67,11 @@ public class CadastroPessoaFisica {
                 while (!numeroValido) {
                         try {
                                 numero = scanner.nextInt();
-                                scanner.nextLine(); // Consumir a nova linha
+                                scanner.nextLine(); 
                                 numeroValido = true;
                         } catch (java.util.InputMismatchException e) {
                                 System.out.println("Número inválido. Por favor, digite um número inteiro.");
-                                scanner.nextLine(); // Consumir a entrada inválida
+                                scanner.nextLine();
                         }
                 }
 
@@ -119,4 +119,6 @@ public class CadastroPessoaFisica {
                 }
                 return pessoa;
         }
+
+        
 }
