@@ -44,7 +44,7 @@ O foco do projeto é a aplicação e consolidação de conceitos de Programaçã
 - java.util.ArrayList e java.util.List: Para armazenamento em memória das contas e clientes.
 - Google Gson para manipulação de JSON.
 
-## Estrutura do Projeto
+## Estrutura do Projeto:
 O código está organizado nos seguintes pacotes:
 ```
 /
@@ -81,7 +81,12 @@ O código está organizado nos seguintes pacotes:
 3. Operações da Conta: Uma vez logado em uma conta, você terá opções para consultar o extrato, realizar depósitos, saques ou transferências para outras contas existentes no sistema.
 4. Sair: Use a opção 0 nos menus para sair do menu atual ou do programa principal.
 
-## Lógica de Persistência e Migração
+## Lógica de Persistência e Migração:
 O sistema utiliza a biblioteca Gson para serializar (Java -> JSON) e desserializar (JSON -> Java) os objetos. Para lidar com a herança (ContaCorrente e ContaPoupanca são tipos de Conta), foi implementado um RuntimeTypeAdapterFactory.
 
 Isso adiciona um campo de "tipo" (ex: "tipoConta": "ContaCorrente") aos arquivos JSON, permitindo que o Gson saiba exatamente qual classe instanciar ao ler os dados. O programa também possui uma rotina de migração que adiciona esses campos automaticamente a arquivos antigos que não os possuam.
+
+## Equipe: 
+Josué Levi Oliveira Lima
+Sergio Henrique Lobato Leal
+Suzane Bianca da Silva Antunes Moura
