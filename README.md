@@ -87,6 +87,6 @@ O sistema utiliza a biblioteca Gson para serializar (Java -> JSON) e desserializ
 Isso adiciona um campo de "tipo" (ex: "tipoConta": "ContaCorrente") aos arquivos JSON, permitindo que o Gson saiba exatamente qual classe instanciar ao ler os dados. O programa também possui uma rotina de migração que adiciona esses campos automaticamente a arquivos antigos que não os possuam.
 
 ## Equipe: 
-Josué Levi Oliveira Lima
-Sergio Henrique Lobato Leal
-Suzane Bianca da Silva Antunes Moura
+- Josué Levi Oliveira Lima
+- Sergio Henrique Lobato Leal
+- Suzane Bianca da Silva Antunes Moura
